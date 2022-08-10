@@ -5,4 +5,15 @@
 #import <Foundation/Foundation.h>
 
 
-@interface MFFileDownloaderCommonResultModel : NSObject @end
+@interface MFFileDownloaderCommonResultModel : NSObject
+
+@property (nonatomic, assign) int status;
+@property (nonatomic, copy) NSString *msg;
+@property (nonatomic) id data;
+
+- (instancetype)initWithStatus:(int)status msg:(NSString *)msg data:(id)data;
+
++ (instancetype)modelWithStatus:(int)status msg:(NSString *)msg data:(id)data;
+
+
+@end

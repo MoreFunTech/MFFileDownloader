@@ -7,10 +7,14 @@
 
 #import "MFFileDownloader.h"
 
+#import "MFFileDownloaderManager.h"
+#import "MFFileDownloaderFMDBManager.h"
+
 @implementation MFFileDownloader
 
 + (void)addDownloadUrl:(NSString *)url {
-    
+
+    MFFileDownloaderFMDBManager.sharedInstance;
 }
 
 @end

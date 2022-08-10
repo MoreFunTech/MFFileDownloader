@@ -5,7 +5,3 @@
 #import "MFFileDownLoaderHeader.h"
 
 
-@implementation MFFileDownLoaderHeader {
-
-}
-@end

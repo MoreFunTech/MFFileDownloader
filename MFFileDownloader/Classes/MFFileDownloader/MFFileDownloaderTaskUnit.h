@@ -5,4 +5,8 @@
 #import <Foundation/Foundation.h>
 
 
-@interface MFFileDownloaderTaskUnit : NSObject @end
+@interface MFFileDownloaderTaskUnit : NSObject
+
+//@property (nonatomic, copy)
+
+@end
