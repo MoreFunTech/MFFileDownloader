@@ -248,6 +248,10 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = NealWills;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = K534XERP6Y;
+						ProvisioningStyle = Manual;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -303,10 +307,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MFFileDownloader_Example/Pods-MFFileDownloader_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/MFFileDownloader/MFFileDownloader.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MFFileDownloader.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,12 +527,17 @@
 			baseConfigurationReference = C052CA550A70D53A07A580C3 /* Pods-MFFileDownloader_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K534XERP6Y;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFFileDownloader/MFFileDownloader-Prefix.pch";
 				INFOPLIST_FILE = "MFFileDownloader/MFFileDownloader-Info.plist";
+				MARKETING_VERSION = 0.0.1;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.neal.normal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Normal Total Develope";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};
@@ -535,12 +548,17 @@
 			baseConfigurationReference = E910D8A3262CE74C0266559D /* Pods-MFFileDownloader_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = K534XERP6Y;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MFFileDownloader/MFFileDownloader-Prefix.pch";
 				INFOPLIST_FILE = "MFFileDownloader/MFFileDownloader-Info.plist";
+				MARKETING_VERSION = 0.0.1;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.neal.normal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Normal Total Develope";
 				SWIFT_VERSION = 4.0;
 				WRAPPER_EXTENSION = app;
 			};

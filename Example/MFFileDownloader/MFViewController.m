@@ -6,7 +6,10 @@
 //  Copyright (c) 2022 NealWills. All rights reserved.
 //
 
+#import <MFFileDownloader/MFFileDownloaderLog.h>
 #import "MFViewController.h"
+
+#import "MFFileDownloader.h"
 
 @interface MFViewController ()
 
@@ -18,6 +21,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+    MFFileDownloaderLog.setModuleName(@"MFKit");
+    MFFileDownloaderLog.setMinLogLevel(MFFileDownloaderLogLevelNormal);
+
+    MFFileDownloaderLog.logFormat(MFFileDownloaderLogLevelDebug, @"321%@%i", @"123", 444);
 }
 
 - (void)didReceiveMemoryWarning
