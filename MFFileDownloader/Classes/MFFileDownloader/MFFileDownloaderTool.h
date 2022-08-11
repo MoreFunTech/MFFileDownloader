@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface MFFileDownLoaderTool : NSObject
+@interface MFFileDownloaderTool : NSObject
 
 /**
  * 判断字符串是否不为空

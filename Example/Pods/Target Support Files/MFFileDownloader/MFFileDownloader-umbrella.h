@@ -12,13 +12,13 @@
 
 #import "MFFileDownloader.h"
 #import "MFFileDownloaderCommonResultModel.h"
-#import "MFFileDownLoaderFileModel.h"
+#import MFFileDownloaderFileModel.h
 #import "MFFileDownloaderFMDBManager.h"
 #import "MFFileDownLoaderHeader.h"
 #import "MFFileDownloaderLog.h"
 #import "MFFileDownloaderManager.h"
 #import "MFFileDownloaderTaskUnit.h"
-#import "MFFileDownLoaderTool.h"
+#import MFFileDownloaderTool.h
 
 FOUNDATION_EXPORT double MFFileDownloaderVersionNumber;
 FOUNDATION_EXPORT const unsigned char MFFileDownloaderVersionString[];

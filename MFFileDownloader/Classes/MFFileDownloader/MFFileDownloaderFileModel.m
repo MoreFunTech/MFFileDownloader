@@ -2,12 +2,12 @@
 // Created by Neal on 2022/8/10.
 //
 
-#import "MFFileDownLoaderFileModel.h"
-#import "MFFileDownLoaderTool.h"
+#import "MFFileDownloaderFileModel.h"
+#import "MFFileDownloaderTool.h"
 #import "MFFileDownloaderCommonResultModel.h"
 
 
-@implementation MFFileDownLoaderFileModel {
+@implementation MFFileDownloaderFileModel {
 }
 
 - (instancetype)initWithId:(NSString *)id name:(NSString *)name url:(NSString *)url furUrl:(NSString *)furUrl mediaType:(int)mediaType during:(CGFloat)during imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight status:(int)status version:(int)version createDate:(NSDate *)createDate updateDate:(NSDate *)updateDate localPath:(NSString *)localPath {
@@ -37,7 +37,7 @@
 
 
 - (MFFileDownloaderCommonResultModel *)sqlInsertSyntaxWithTableName:(NSString *)tableName {
-    if (![MFFileDownLoaderTool isStringNotNull:tableName]) {
+    if (![MFFileDownloaderTool isStringNotNull:tableName]) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"表名为空" data:@""];
     }
     MFFileDownloaderCommonResultModel *isModelValid = [self isModelValid];
@@ -45,7 +45,7 @@
         return isModelValid;
     }
 
-    if (![MFFileDownLoaderTool isStringNotNull:self.furUrl]) {
+    if (![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
         self.furUrl = @"";
     }
     if (self.imageWidth <= 0) {
@@ -74,7 +74,7 @@
 }
 
 - (MFFileDownloaderCommonResultModel *)sqlUpdateSyntaxWithTableName:(NSString *)tableName {
-    if (![MFFileDownLoaderTool isStringNotNull:tableName]) {
+    if (![MFFileDownloaderTool isStringNotNull:tableName]) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"表名为空" data:@""];
     }
     MFFileDownloaderCommonResultModel *isModelValid = [self isModelValid];
@@ -82,7 +82,7 @@
         return isModelValid;
     }
 
-    if (![MFFileDownLoaderTool isStringNotNull:self.furUrl]) {
+    if (![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
         self.furUrl = @"";
     }
     if (self.imageWidth <= 0) {
@@ -122,19 +122,19 @@
     int status = 0;
     NSString *msg = @"";
     NSString *data = @"";
-    if (![MFFileDownLoaderTool isStringNotNull:self.id]) {
+    if (![MFFileDownloaderTool isStringNotNull:self.id]) {
         status = -1;
         msg = @"id为空";
-    } else if (![MFFileDownLoaderTool isStringNotNull:self.name]) {
+    } else if (![MFFileDownloaderTool isStringNotNull:self.name]) {
         status = -1;
         msg = @"name为空";
-    } else if (![MFFileDownLoaderTool isStringNotNull:self.url]) {
+    } else if (![MFFileDownloaderTool isStringNotNull:self.url]) {
         status = -1;
         msg = @"url为空";
     } else if (self.mediaType <= 0 || self.mediaType > 6) {
         status = -1;
         msg = [NSString stringWithFormat:@"mediaType需要为1~6, 当前为%d", self.mediaType];
-    } else if (self.mediaType == 2 && ![MFFileDownLoaderTool isStringNotNull:self.furUrl]) {
+    } else if (self.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
         status = -1;
         msg = [NSString stringWithFormat:@"mediaType需要为2时furUrl不可为空"];
     } else if (self.status < 1) {

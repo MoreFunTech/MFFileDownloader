@@ -4,7 +4,7 @@
 
 #import "MFFileDownloaderLog.h"
 
-#import "MFFileDownLoaderTool.h"
+#import "MFFileDownloaderTool.h"
 
 
 @interface MFFileDownloaderLog ()
@@ -78,7 +78,7 @@
 //        va_list args;
 //        va_start(args, format);
 //        va_end(args);
-//        NSString *msg = [MFFileDownLoaderTool extractStringWithFormat:format, args];
+//        NSString *msg = [MFFileDownloaderTool extractStringWithFormat:format, args];
 //        [MFFileDownloaderLog logWithLevel:level msg:msg];
     };
 }

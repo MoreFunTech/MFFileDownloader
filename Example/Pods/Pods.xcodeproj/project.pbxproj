@@ -55,7 +55,6 @@
 		3EB06038EA8B2F16AA51FF27905876A7 /* FMDB-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 00C6EB4C44366287758274D7941A6ABD /* FMDB-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3F058F6B96E96FA47383AD7F7A75778D /* FBSnapshotTestCasePlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = 50BFC7DCFE35D9F7AD867199D54BC24D /* FBSnapshotTestCasePlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FCE4BEB75B63E05630BBF273830329B /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3280BB5E7B57C31D41117A74F76E9DF3 /* QuartzCore.framework */; };
-		3FDB08E9E25F8CE514A84F2164BA265C /* MFFileDownLoaderHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 716D5843E0D196DC7D8611E2F039546E /* MFFileDownLoaderHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		40EDEFC16D8C7D6CAAC7CBA13BAD45DD /* EXPMatchers+beLessThan.h in Headers */ = {isa = PBXBuildFile; fileRef = C3A0FC65CE514FD8CCD307149AA908DA /* EXPMatchers+beLessThan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		42F95C4D148419501D242CB90F81B679 /* SpectaUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 157745D0FDE7153B7E44FE60558E8AE9 /* SpectaUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4497B6FA75F0F29B8B39D81901403906 /* EXPMatchers+beGreaterThanOrEqualTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 945D23B0B3B149B535F54D6F815A6A12 /* EXPMatchers+beGreaterThanOrEqualTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -109,12 +108,11 @@
 		73C10CDFEAC1F11878A7B3AD41B9907C /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 9DB72A5687A8A0FAF267426DC8D84029 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		73C1E84216DBA0C522B27CBF619D7DE7 /* SPTCompiledExample.h in Headers */ = {isa = PBXBuildFile; fileRef = DF58C0ABD47EB97370C5665425D1C7E9 /* SPTCompiledExample.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		74BCA9241955ED11E5ABE14C151F2C3F /* EXPMatchers+beIdenticalTo.h in Headers */ = {isa = PBXBuildFile; fileRef = D56E3684F98B37E1214E3177BB9430A3 /* EXPMatchers+beIdenticalTo.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		7505DE9C68CAE0A703441B5E0E2C79FD /* MFFileDownLoaderTool.m in Sources */ = {isa = PBXBuildFile; fileRef = FED42BB6FE22700C53C99772F541EA40 /* MFFileDownLoaderTool.m */; };
+		7505DE9C68CAE0A703441B5E0E2C79FD /* MFFileDownloaderTool.m in Sources */ = {isa = PBXBuildFile; fileRef = FED42BB6FE22700C53C99772F541EA40 /* MFFileDownloaderTool.m */; };
 		75BC8AF25B898D8F62663C08BC9CF4D6 /* UIImage+Compare.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C5A0FA39A62E4A61A5FFEFB5CC377F /* UIImage+Compare.m */; };
 		7648DF9A21C6D0844842874C2644ECBA /* UIImage+Snapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = DD66600CF6F22D3D608EC9A1A62D6497 /* UIImage+Snapshot.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		76E272D85573A704A46D174CEBD11825 /* XCTest+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = A7292B859340A57EB55DA6FE0E0DC526 /* XCTest+Private.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		77BFEC0CB11BC106F2C8251E2E5D8578 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8D862AF2B0FFB75F1E669EA2D2838BC6 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		78576B0DB8A78A20F4FD6B56B17B656E /* MFFileDownLoaderHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 9490B8253686C7BA81C337EE8B63BE63 /* MFFileDownLoaderHeader.m */; };
 		785A1A6140143F52B65F096945E78C69 /* EXPMatchers+raise.m in Sources */ = {isa = PBXBuildFile; fileRef = 517E873B793BA92044D9EB7BA99771DF /* EXPMatchers+raise.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		7CBD36C3120625A98368F1BB796883FB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA24A38BA9EE106B59E3D4C8DD1CE0E /* UIKit.framework */; };
 		7D3F35A54FAC48D67813DBDC96BEEFB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57221B54D014471C3D3E1925EFC917C8 /* Foundation.framework */; };
@@ -123,7 +121,7 @@
 		80F7C028FBB36F3EC53E80292E2B869D /* MFFileDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = D166E574BB36430B12211C4663F38C87 /* MFFileDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		81C76941D750B3F226E07AE600A67FC6 /* AFURLResponseSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 03AB96D180D858DCC8FD4B903256BBB1 /* AFURLResponseSerialization.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8246D862087C7890593899AEA5898697 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 986D3A024DB23D6EED22D52F0C501D53 /* FMResultSet.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		834B5E6B6AFCE0A2B6656CF7EC526B5A /* MFFileDownLoaderTool.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A9459D21BB331546B816F9FD8556AC /* MFFileDownLoaderTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		834B5E6B6AFCE0A2B6656CF7EC526B5A /* MFFileDownloaderTool.h in Headers */ = {isa = PBXBuildFile; fileRef = C6A9459D21BB331546B816F9FD8556AC /* MFFileDownloaderTool.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		83E9702C03300D955E538F9E55112934 /* Pods-MFFileDownloader_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = F1DD0A4A38B2C9CC37EC2C6CB4A98559 /* Pods-MFFileDownloader_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		844818A001C5D818C0AF67835C199334 /* MFFileDownloaderFMDBManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 99F9D182411C067E10E81458F9CB1832 /* MFFileDownloaderFMDBManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		847312CB953329122B7F5B864C15F5FE /* NSValue+Expecta.m in Sources */ = {isa = PBXBuildFile; fileRef = CF151EBA27DB4D5EBB7901632335DE16 /* NSValue+Expecta.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -179,7 +177,7 @@
 		CA738E9B10E27865B0B3CFDE75CC405C /* EXPMatchers+FBSnapshotTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EC66C8C7040F618000B025C4C4D0233 /* EXPMatchers+FBSnapshotTest.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CAD054369D18895A1C227881337D21AB /* MFFileDownloaderTaskUnit.h in Headers */ = {isa = PBXBuildFile; fileRef = B6A84530906D3E041A794ADA8DBB6BFA /* MFFileDownloaderTaskUnit.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CB8A26F7B56EE3511ADCD26B37DC6669 /* ExpectaSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BCB41232C5D496A863DCB2D9E4E98CB /* ExpectaSupport.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		CBF5B96F93F1162F06453FCD36773037 /* MFFileDownLoaderFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownLoaderFileModel.m */; };
+		CBF5B96F93F1162F06453FCD36773037 /* MFFileDownloaderFileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownloaderFileModel.m */; };
 		CD57DB486DA7221C5A70226D50FFF0A5 /* EXPMatchers+conformTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 60D42C421747DCC18E24E0285B015667 /* EXPMatchers+conformTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CDEF12A353FEBC8FE4E2EA0D3FFAC615 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = E9A31B4A4086D610892C73D947BECD2F /* AFURLRequestSerialization.m */; };
 		D20ED422F19CBEBE50EFD34D10A7204D /* EXPMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC74D1EBE310E41A1C4E48732EEB3E0 /* EXPMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -211,7 +209,7 @@
 		F2B5D73C3923C1F4A04CE0613A482690 /* EXPBlockDefinedMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC729A5155A7A3838DFDECA4B211354 /* EXPBlockDefinedMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F38B030E7B39776A987AEA1CC1FA10A7 /* EXPMatchers+beGreaterThan.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CE4FECEEED9733AB8384CA04A28273 /* EXPMatchers+beGreaterThan.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F3959A6F13D70E595F272F07FB8B00BD /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 6EC71D7488D040B6D4B818BB64DEDE60 /* FMDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F49E21E132B79634871470B3AEFA53F2 /* MFFileDownLoaderFileModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownLoaderFileModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F49E21E132B79634871470B3AEFA53F2 /* MFFileDownloaderFileModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownloaderFileModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F63E14CCD57CC9BCB926AA59B5094256 /* EXPMatchers+beGreaterThanOrEqualTo.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4839007FAB5D231FCE391F6CB99A50 /* EXPMatchers+beGreaterThanOrEqualTo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7E0E769E598A2854D7C0B4E01AD6035 /* MFFileDownloaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C7D8729B753C54174B43654C3FCB2F0 /* MFFileDownloaderManager.m */; };
 		F8B9E5CAE5B20040636DB485549D5F3F /* EXPMatchers+haveCountOf.h in Headers */ = {isa = PBXBuildFile; fileRef = BAF2E4863884C593EBEB77CF6106611B /* EXPMatchers+haveCountOf.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -382,7 +380,7 @@
 		473066559D79A3A0DE3A11D91B679752 /* ExpectaObject+FBSnapshotTest.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "ExpectaObject+FBSnapshotTest.m"; sourceTree = "<group>"; };
 		4756C2EC5CC3ACCE9145DE5CB495E32F /* AFCompatibilityMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFCompatibilityMacros.h; path = AFNetworking/AFCompatibilityMacros.h; sourceTree = "<group>"; };
 		47EFF5C354E56CF7C466535A00AE1708 /* MFFileDownloaderCommonResultModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownloaderCommonResultModel.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownloaderCommonResultModel.h; sourceTree = "<group>"; };
-		47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownLoaderFileModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownLoaderFileModel.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderFileModel.h; sourceTree = "<group>"; };
+		47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownloaderFileModel.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownloaderFileModel.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownloaderFileModel.h; sourceTree = "<group>"; };
 		48293D0ADEC51CED485E5A163B0C5971 /* SPTSharedExampleGroups.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTSharedExampleGroups.m; path = Specta/Specta/SPTSharedExampleGroups.m; sourceTree = "<group>"; };
 		486D9CDD25837E84F7C0310E8DDDB095 /* NSValue+Expecta.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSValue+Expecta.h"; path = "Expecta/NSValue+Expecta.h"; sourceTree = "<group>"; };
 		48B952E40C10295A7A4D1B6E871A22B8 /* EXPMatchers+match.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+match.m"; path = "Expecta/Matchers/EXPMatchers+match.m"; sourceTree = "<group>"; };
@@ -439,7 +437,6 @@
 		6EC71D7488D040B6D4B818BB64DEDE60 /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
 		706D62F441C9C21CAF372DB7B6187EFE /* EXPFloatTuple.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPFloatTuple.h; path = Expecta/EXPFloatTuple.h; sourceTree = "<group>"; };
 		708D652A7C85A3E123A13016EE81E455 /* Specta-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Specta-umbrella.h"; sourceTree = "<group>"; };
-		716D5843E0D196DC7D8611E2F039546E /* MFFileDownLoaderHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownLoaderHeader.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderHeader.h; sourceTree = "<group>"; };
 		7248D7217C0CB83B8103198FCB579BFF /* EXPMatchers+respondTo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+respondTo.h"; path = "Expecta/Matchers/EXPMatchers+respondTo.h"; sourceTree = "<group>"; };
 		731EAA82CC8BDCF32C255CB2B56B3E59 /* AFImageDownloader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFImageDownloader.h; path = "UIKit+AFNetworking/AFImageDownloader.h"; sourceTree = "<group>"; };
 		73BA30030633A4479EE941E265C60B0A /* SPTCallSite.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTCallSite.m; path = Specta/Specta/SPTCallSite.m; sourceTree = "<group>"; };
@@ -471,7 +468,6 @@
 		90D5C14BA98332E36164BE57A9872836 /* MFFileDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MFFileDownloader.release.xcconfig; sourceTree = "<group>"; };
 		93BC86AD6036AD56DD6F1AF24929D9BD /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFHTTPSessionManager.h; path = AFNetworking/AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		945D23B0B3B149B535F54D6F815A6A12 /* EXPMatchers+beGreaterThanOrEqualTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beGreaterThanOrEqualTo.m"; path = "Expecta/Matchers/EXPMatchers+beGreaterThanOrEqualTo.m"; sourceTree = "<group>"; };
-		9490B8253686C7BA81C337EE8B63BE63 /* MFFileDownLoaderHeader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MFFileDownLoaderHeader.m; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderHeader.m; sourceTree = "<group>"; };
 		94B9BA3F6C742698F456F101C19DF100 /* EXPMatcherHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPMatcherHelpers.h; path = Expecta/Matchers/EXPMatcherHelpers.h; sourceTree = "<group>"; };
 		954B9CAD59C617B588097FD10A2CAAAA /* UIActivityIndicatorView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIActivityIndicatorView+AFNetworking.h"; path = "UIKit+AFNetworking/UIActivityIndicatorView+AFNetworking.h"; sourceTree = "<group>"; };
 		958463124E8CDBDAFE8ADCE5AABD70E0 /* FBSnapshotTestCasePlatform.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBSnapshotTestCasePlatform.m; path = FBSnapshotTestCase/FBSnapshotTestCasePlatform.m; sourceTree = "<group>"; };
@@ -525,7 +521,7 @@
 		C379496AC976AEEB301AF19DF83BE1CD /* EXPMatchers+beNil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beNil.m"; path = "Expecta/Matchers/EXPMatchers+beNil.m"; sourceTree = "<group>"; };
 		C3A0FC65CE514FD8CCD307149AA908DA /* EXPMatchers+beLessThan.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beLessThan.h"; path = "Expecta/Matchers/EXPMatchers+beLessThan.h"; sourceTree = "<group>"; };
 		C4A5A99DF4638A8C4EEC224A159ED5C7 /* EXPMatchers+haveCountOf.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+haveCountOf.m"; path = "Expecta/Matchers/EXPMatchers+haveCountOf.m"; sourceTree = "<group>"; };
-		C6A9459D21BB331546B816F9FD8556AC /* MFFileDownLoaderTool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownLoaderTool.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderTool.h; sourceTree = "<group>"; };
+		C6A9459D21BB331546B816F9FD8556AC /* MFFileDownloaderTool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MFFileDownloaderTool.h; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownloaderTool.h; sourceTree = "<group>"; };
 		C725AD7266FDBF13FFE97FEB2AFDACE6 /* AFImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFImageDownloader.m; path = "UIKit+AFNetworking/AFImageDownloader.m"; sourceTree = "<group>"; };
 		C9878BFF78009110B5506EE2AD258877 /* AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworking.h; path = AFNetworking/AFNetworking.h; sourceTree = "<group>"; };
 		CC80381393B0AB7C5E797C9A5DAF47C5 /* Pods-MFFileDownloader_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-MFFileDownloader_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -572,12 +568,12 @@
 		F8D66C93B015FA73367039BE372E3254 /* Expecta+Snapshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Expecta+Snapshots.debug.xcconfig"; sourceTree = "<group>"; };
 		FA5BFC21B3E90FC529B50A37AA439B66 /* Pods-MFFileDownloader_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-MFFileDownloader_Example.modulemap"; sourceTree = "<group>"; };
 		FB15B822C1152AB3BB65B877C14CA2C5 /* EXPMatchers+beSubclassOf.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beSubclassOf.h"; path = "Expecta/Matchers/EXPMatchers+beSubclassOf.h"; sourceTree = "<group>"; };
-		FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownLoaderFileModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MFFileDownLoaderFileModel.m; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderFileModel.m; sourceTree = "<group>"; };
+		FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownloaderFileModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MFFileDownloaderFileModel.m; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownloaderFileModel.m; sourceTree = "<group>"; };
 		FBD3C8A9E2CB610327C4F50C08469011 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
 		FCED5E6D8CC90C4666F3025E137FBF29 /* EXPMatchers+beCloseTo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+beCloseTo.m"; path = "Expecta/Matchers/EXPMatchers+beCloseTo.m"; sourceTree = "<group>"; };
 		FE789F65D113E16B810913EA2C7665CB /* EXPMatchers+beCloseTo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "EXPMatchers+beCloseTo.h"; path = "Expecta/Matchers/EXPMatchers+beCloseTo.h"; sourceTree = "<group>"; };
 		FEB8AC6A5864D2AD312E086AAF22A823 /* EXPMatchers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPMatchers.h; path = Expecta/Matchers/EXPMatchers.h; sourceTree = "<group>"; };
-		FED42BB6FE22700C53C99772F541EA40 /* MFFileDownLoaderTool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MFFileDownLoaderTool.m; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownLoaderTool.m; sourceTree = "<group>"; };
+		FED42BB6FE22700C53C99772F541EA40 /* MFFileDownloaderTool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MFFileDownloaderTool.m; path = MFFileDownloader/Classes/MFFileDownloader/MFFileDownloaderTool.m; sourceTree = "<group>"; };
 		FFA8435B4A175ABC3AAF2FB3F518B17D /* Expecta-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Expecta-Info.plist"; sourceTree = "<group>"; };
 		FFB93FC362C24C49E7083B460368B17D /* SPTExampleGroup.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTExampleGroup.m; path = Specta/Specta/SPTExampleGroup.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -967,20 +963,18 @@
 				3EE74ED0CEA58AD0F9B84E745C3C3C90 /* MFFileDownloader.m */,
 				47EFF5C354E56CF7C466535A00AE1708 /* MFFileDownloaderCommonResultModel.h */,
 				ACEAFF359D2DC9E4784F25CFFAAD7606 /* MFFileDownloaderCommonResultModel.m */,
-				47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownLoaderFileModel.h */,
-				FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownLoaderFileModel.m */,
+				47F38D87AB8AE40F15F7D8844C2EBE2F /* MFFileDownloaderFileModel.h */,
+				FB43521612FF878EA805E97A0DFE1A79 /* MFFileDownloaderFileModel.m */,
 				99F9D182411C067E10E81458F9CB1832 /* MFFileDownloaderFMDBManager.h */,
 				42655B44F1BDBD379B76B0CB52752DA8 /* MFFileDownloaderFMDBManager.m */,
-				716D5843E0D196DC7D8611E2F039546E /* MFFileDownLoaderHeader.h */,
-				9490B8253686C7BA81C337EE8B63BE63 /* MFFileDownLoaderHeader.m */,
 				53E67D49667E91776F696A73F83C191E /* MFFileDownloaderLog.h */,
 				4961F0782494B181912061D20A1DCBAC /* MFFileDownloaderLog.m */,
 				9C5898B97464D532D36D5CE044185B70 /* MFFileDownloaderManager.h */,
 				3C7D8729B753C54174B43654C3FCB2F0 /* MFFileDownloaderManager.m */,
 				B6A84530906D3E041A794ADA8DBB6BFA /* MFFileDownloaderTaskUnit.h */,
 				8EE8BBA751A3CA3E7B3FBDF8E025E1AA /* MFFileDownloaderTaskUnit.m */,
-				C6A9459D21BB331546B816F9FD8556AC /* MFFileDownLoaderTool.h */,
-				FED42BB6FE22700C53C99772F541EA40 /* MFFileDownLoaderTool.m */,
+				C6A9459D21BB331546B816F9FD8556AC /* MFFileDownloaderTool.h */,
+				FED42BB6FE22700C53C99772F541EA40 /* MFFileDownloaderTool.m */,
 				AF261010072905A6FDB36C76DCDE10E5 /* Pod */,
 				D285970E11FDC2FC57BAF5B8D4AF601C /* Support Files */,
 			);
@@ -1222,13 +1216,12 @@
 				80F7C028FBB36F3EC53E80292E2B869D /* MFFileDownloader.h in Headers */,
 				5AA1AA7AEC448F9B40D326F7B58E820E /* MFFileDownloader-umbrella.h in Headers */,
 				DC48E68148ABAB6BD823C3DE8F70AAE1 /* MFFileDownloaderCommonResultModel.h in Headers */,
-				F49E21E132B79634871470B3AEFA53F2 /* MFFileDownLoaderFileModel.h in Headers */,
+				F49E21E132B79634871470B3AEFA53F2 /* MFFileDownloaderFileModel.h in Headers */,
 				844818A001C5D818C0AF67835C199334 /* MFFileDownloaderFMDBManager.h in Headers */,
-				3FDB08E9E25F8CE514A84F2164BA265C /* MFFileDownLoaderHeader.h in Headers */,
 				1A81382D4B2822D46532ED499EECD3A1 /* MFFileDownloaderLog.h in Headers */,
 				D27F91826D5659AC907BB55D3B902370 /* MFFileDownloaderManager.h in Headers */,
 				CAD054369D18895A1C227881337D21AB /* MFFileDownloaderTaskUnit.h in Headers */,
-				834B5E6B6AFCE0A2B6656CF7EC526B5A /* MFFileDownLoaderTool.h in Headers */,
+				834B5E6B6AFCE0A2B6656CF7EC526B5A /* MFFileDownloaderTool.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1786,13 +1779,12 @@
 				0E0F2AC5FF341A31817DA185BDA8F1F1 /* MFFileDownloader.m in Sources */,
 				B9FA2B4E6AC3637B9C5D735533E0B01B /* MFFileDownloader-dummy.m in Sources */,
 				AF39F5A12DE65F2666A7796E6F1A0430 /* MFFileDownloaderCommonResultModel.m in Sources */,
-				CBF5B96F93F1162F06453FCD36773037 /* MFFileDownLoaderFileModel.m in Sources */,
+				CBF5B96F93F1162F06453FCD36773037 /* MFFileDownloaderFileModel.m in Sources */,
 				6BED9B08A4C6F7CAFD92AF8AC874A810 /* MFFileDownloaderFMDBManager.m in Sources */,
-				78576B0DB8A78A20F4FD6B56B17B656E /* MFFileDownLoaderHeader.m in Sources */,
 				7076E795FEB009314781B5D1BD634883 /* MFFileDownloaderLog.m in Sources */,
 				F7E0E769E598A2854D7C0B4E01AD6035 /* MFFileDownloaderManager.m in Sources */,
 				FE5171BDF273844C6A119AC9E070C5AF /* MFFileDownloaderTaskUnit.m in Sources */,
-				7505DE9C68CAE0A703441B5E0E2C79FD /* MFFileDownLoaderTool.m in Sources */,
+				7505DE9C68CAE0A703441B5E0E2C79FD /* MFFileDownloaderTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

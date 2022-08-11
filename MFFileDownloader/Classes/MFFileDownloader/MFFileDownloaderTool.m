@@ -2,10 +2,10 @@
 // Created by Neal on 2022/8/10.
 //
 
-#import "MFFileDownLoaderTool.h"
+#import "MFFileDownloaderTool.h"
 
 
-@implementation MFFileDownLoaderTool { }
+@implementation MFFileDownloaderTool { }
 
 + (BOOL)isStringNotNull:(NSString *)string {
     if ([string isKindOfClass:[NSNull class]]) {
@@ -48,7 +48,7 @@
     va_start(args, format);
     NSMutableString *toString = [NSMutableString stringWithCapacity:[format length]];
     NSMutableArray *arguments = [NSMutableArray array];
-    [MFFileDownLoaderTool extractFormat:format argumentsList:args intoString:toString arguments:arguments specialKey:specialKey];
+    [MFFileDownloaderTool extractFormat:format argumentsList:args intoString:toString arguments:arguments specialKey:specialKey];
     va_end(args);
     NSString *resultString = [NSString stringWithFormat:@"%@", toString];
     while ([resultString containsString:specialKey]) {

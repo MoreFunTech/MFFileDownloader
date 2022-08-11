@@ -8,7 +8,7 @@
 
 #import <MFFileDownloader/MFFileDownloaderLog.h>
 #import "MFViewController.h"
-#import "MFFileDownLoaderFileModel.h"
+#import "MFFileDownloaderFileModel.h"
 #import "MFFileDownloaderCommonResultModel.h"
 
 #import "MFFileDownloader.h"

@@ -6,7 +6,7 @@
 
 @class MFFileDownloaderCommonResultModel;
 
-@interface MFFileDownLoaderFileModel : NSObject
+@interface MFFileDownloaderFileModel : NSObject
 
 /**
  * 文件id
