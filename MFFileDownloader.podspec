@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MFFileDownloader'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'A File Downloader Manager'
 
 # This description is used to generate tags and improve search results.
@@ -40,4 +40,5 @@ A File Downloader To Manager Download Actions;
    s.frameworks = 'UIKit'
    s.dependency 'AFNetworking', '~> 4.0'
    s.dependency 'FMDB', '~> 2.7'
+   
 end
