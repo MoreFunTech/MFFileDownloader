@@ -65,14 +65,19 @@
 @property (nonatomic, assign) int version;
 
 /**
+ * 下载状态 0 未下载  1 下载中  2 已下载
+ */
+@property (nonatomic, assign) int downloadStatus;
+
+/**
  * 记录创建时间
  */
-@property (nonatomic, copy) NSDate *createDate;
+@property (nonatomic, strong) NSDate *createDate;
 
 /**
  * 记录更新时间
  */
-@property (nonatomic, copy) NSDate *updateDate;
+@property (nonatomic, strong) NSDate *updateDate;
 
 /**
  * 本地文件保存地址
@@ -83,8 +88,12 @@
 
 + (instancetype)modelWithId:(NSString *)id name:(NSString *)name url:(NSString *)url furUrl:(NSString *)furUrl mediaType:(int)mediaType during:(CGFloat)during imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight status:(int)status version:(int)version createDate:(NSDate *)createDate updateDate:(NSDate *)updateDate localPath:(NSString *)localPath;
 
+- (MFFileDownloaderCommonResultModel *)isModelValid;
 
-- (MFFileDownloaderCommonResultModel *)sqlInsertSyntaxWithTableName:(NSString *)tableName;
-- (MFFileDownloaderCommonResultModel *)sqlUpdateSyntaxWithTableName:(NSString *)tableName;
+- (MFFileDownloaderCommonResultModel *)isModelCanInsert;
+- (MFFileDownloaderCommonResultModel *)isModelCanUpdate;
+
+- (NSString *)description;
+
 
 @end

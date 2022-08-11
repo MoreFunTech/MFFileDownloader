@@ -35,7 +35,7 @@
 }
 
 + (NSString *)formatLogWith:(MFFileDownloaderLogLevel)level msg:(NSString *)msg {
-    NSString *top = [NSString stringWithFormat:@"\n┏━━━━━━━━━━━━━━━━━━━━━━━"];
+    NSString *top = [NSString stringWithFormat:@"\n┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"];
     NSString *moduleName = @"MFFileDownloader";
     if ([MFFileDownloaderLog.sharedInstance.moduleName isKindOfClass:[NSString class]]) {
         if (MFFileDownloaderLog.sharedInstance.moduleName.length > 0) {
@@ -44,8 +44,8 @@
     }
     NSString *mark = [NSString stringWithFormat:@"\n  Level: %@  |  Module:%@", [self levelMarkWith:level], moduleName];
     NSString *content = [NSString stringWithFormat:@"\n  %@", msg];
-    NSString *bottom = [NSString stringWithFormat:@"\n┗━━━━━━━━━━━━━━━━━━━━━━━"];
-    return [NSString stringWithFormat:@"%@%@%@%@", top, mark, content, bottom];
+    NSString *bottom = [NSString stringWithFormat:@"\n┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"];
+    return [NSString stringWithFormat:@"%@%@%@%@\n", top, mark, content, bottom];
 }
 
 + (NSString *)levelMarkWith:(MFFileDownloaderLogLevel)level {
