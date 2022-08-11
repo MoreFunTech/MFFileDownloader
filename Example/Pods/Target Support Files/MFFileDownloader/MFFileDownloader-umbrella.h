@@ -11,11 +11,14 @@
 #endif
 
 #import "MFFileDownloader.h"
+#import "MFFileDownloaderCommonResultModel.h"
+#import "MFFileDownloaderFileModel.h"
 #import "MFFileDownloaderFMDBManager.h"
-#import "MFFileDownLoaderHeader.h"
+#import "MFFileDownloaderHeader.h"
 #import "MFFileDownloaderLog.h"
 #import "MFFileDownloaderManager.h"
 #import "MFFileDownloaderTaskUnit.h"
+#import "MFFileDownloaderTool.h"
 
 FOUNDATION_EXPORT double MFFileDownloaderVersionNumber;
 FOUNDATION_EXPORT const unsigned char MFFileDownloaderVersionString[];

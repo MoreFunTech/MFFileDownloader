@@ -1,8 +1,11 @@
 //
-// Created by Neal on 2022/8/10.
+// Created by Neal on 2022/8/11.
 //
 
-#import <Foundation/Foundation.h>
-
-
-@interface MFFileDownLoaderHeader : NSObject @end
+#import "MFFileDownloaderCommonResultModel.h"
+#import "MFFileDownloaderFileModel.h"
+#import "MFFileDownloaderFMDBManager.h"
+#import "MFFileDownloaderLog.h"
+#import "MFFileDownloaderManager.h"
+#import "MFFileDownloaderTaskUnit.h"
+#import "MFFileDownloaderTool.h"

@@ -6,12 +6,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MFFileDownloaderHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MFFileDownloader : NSObject
 
-+ (void)addDownloadUrl:(NSString *)url;
++ (MFFileDownloaderCommonResultModel *)addDownloadFile:(MFFileDownloaderFileModel *)fileModel;
++ (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel;
 
 @end
 

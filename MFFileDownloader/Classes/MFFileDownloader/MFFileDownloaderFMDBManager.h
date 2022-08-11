@@ -4,5 +4,77 @@
 
 #import <Foundation/Foundation.h>
 
+@class MFFileDownloaderCommonResultModel;
+@class MFFileDownloaderFileModel;
 
-@interface MFFileDownloaderFMDBManager : NSObject @end
+@interface MFFileDownloaderFMDBManager : NSObject
+
+/**
+ * 单例
+ * @return 返回单例模型
+ */
++ (instancetype)sharedInstance;
+
+/**
+ * 触发默认配置
+ */
++ (void)defaultConfigure;
+
+/**
+ * 文件管理根目录
+ * @return
+ */
++ (NSString *)dataBaseDirection;
+
+/**
+ * 判断地址是否可用
+ * @param direction
+ * @return
+ */
++ (BOOL)isDirectionExit:(NSString *)direction;
+
+/**
+ * 创建表的SQL语句
+ * @return
+ */
++ (NSString *)sqlStrCreateTableFile;
+
+/**
+ * 插入数据
+ * @param fileModel 数据模型
+ */
++ (MFFileDownloaderCommonResultModel *)insertDataWithModel:(MFFileDownloaderFileModel *)fileModel;
+
+/**
+ * 更新数据
+ * @param fileModel 数据模型
+ */
++ (MFFileDownloaderCommonResultModel *)updateDataWithModel:(MFFileDownloaderFileModel *)fileModel;
+
+/**
+ * 删除数据
+ * @param fileModel 数据模型
+ */
++ (MFFileDownloaderCommonResultModel *)deleteDataWithModel:(MFFileDownloaderFileModel *)fileModel;
+
+/**
+ * 查询数据
+ * @param url 根据url进行查询
+ */
++ (MFFileDownloaderCommonResultModel *)searchDataWithUrl:(NSString *)url;
+
+/**
+ * 查询数据
+ * @param url 根据url进行查询
+ */
++ (MFFileDownloaderCommonResultModel *)searchDataWithId:(NSString *)id;
+
+/**
+ * 查询数据
+ * @param url 根据url进行查询
+ */
++ (MFFileDownloaderCommonResultModel *)getAllData;
+
+
+
+@end
