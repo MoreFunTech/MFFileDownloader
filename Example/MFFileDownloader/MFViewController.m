@@ -8,6 +8,8 @@
 
 #import <MFFileDownloader/MFFileDownloaderLog.h>
 #import "MFViewController.h"
+#import "MFFileDownLoaderFileModel.h"
+#import "MFFileDownloaderCommonResultModel.h"
 
 #import "MFFileDownloader.h"
 
@@ -26,6 +28,7 @@
     MFFileDownloaderLog.setMinLogLevel(MFFileDownloaderLogLevelNormal);
 
     MFFileDownloaderLog.logFormat(MFFileDownloaderLogLevelDebug, @"321%@%i", @"123", 444);
+
 }
 
 - (void)didReceiveMemoryWarning

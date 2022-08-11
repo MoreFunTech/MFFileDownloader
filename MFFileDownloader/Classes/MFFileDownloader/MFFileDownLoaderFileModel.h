@@ -6,7 +6,6 @@
 
 @class MFFileDownloaderCommonResultModel;
 
-
 @interface MFFileDownLoaderFileModel : NSObject
 
 /**
@@ -79,6 +78,11 @@
  * 本地文件保存地址
  */
 @property (nonatomic, copy) NSString *localPath;
+
+- (instancetype)initWithId:(NSString *)id name:(NSString *)name url:(NSString *)url furUrl:(NSString *)furUrl mediaType:(int)mediaType during:(CGFloat)during imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight status:(int)status version:(int)version createDate:(NSDate *)createDate updateDate:(NSDate *)updateDate localPath:(NSString *)localPath;
+
++ (instancetype)modelWithId:(NSString *)id name:(NSString *)name url:(NSString *)url furUrl:(NSString *)furUrl mediaType:(int)mediaType during:(CGFloat)during imageWidth:(CGFloat)imageWidth imageHeight:(CGFloat)imageHeight status:(int)status version:(int)version createDate:(NSDate *)createDate updateDate:(NSDate *)updateDate localPath:(NSString *)localPath;
+
 
 - (MFFileDownloaderCommonResultModel *)sqlInsertSyntaxWithTableName:(NSString *)tableName;
 - (MFFileDownloaderCommonResultModel *)sqlUpdateSyntaxWithTableName:(NSString *)tableName;
