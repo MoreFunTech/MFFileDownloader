@@ -14,7 +14,7 @@
 #import "MFFileDownloaderCommonResultModel.h"
 #import "MFFileDownloaderFileModel.h"
 #import "MFFileDownloaderFMDBManager.h"
-#import "MFFileDownloaderHeader.h"
+#import "MFFileDownLoaderHeader.h"
 #import "MFFileDownloaderLog.h"
 #import "MFFileDownloaderManager.h"
 #import "MFFileDownloaderTaskUnit.h"
