@@ -6,10 +6,18 @@
 //
 
 #import "MFFileDownloader.h"
+#import <AFNetworking/AFNetworking.h>
 
 @implementation MFFileDownloader
 
 + (MFFileDownloaderCommonResultModel *)addDownloadFile:(MFFileDownloaderFileModel *)fileModel {
+    return [self addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
+
+    }];
+}
+
++ (MFFileDownloaderCommonResultModel *)addDownloadFile:(MFFileDownloaderFileModel *)fileModel
+                                           resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     MFFileDownloaderCommonResultModel *validResult = [self judgeValidDownloadFile:fileModel];
     if (validResult.status < 0) {
         return validResult;
@@ -25,15 +33,15 @@
             if (insertModel.status < 0) {
                 return insertModel;
             } else {
-                return [self preStartDownloadWithFileModel:fileModel];
+                return [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
             }
         } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
-            if (fileModel1.downloadStatus == 0) {
-                return [self preStartDownloadWithFileModel:fileModel1];
-            } else if (fileModel1.downloadStatus == 1) {
+            if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadNot || fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadError) {
+                return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+            } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-2 msg:@"文件正在下载中" data:fileModel1];
-            } else if (fileModel1.downloadStatus == 2) {
+            } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-3 msg:@"文件已存在" data:fileModel1];
             } else {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知状态, 请更新版本" data:fileModel1];
@@ -44,6 +52,13 @@
 }
 
 + (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel {
+    return [self reDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
+
+    }];
+}
+
++ (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel
+                                          resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     MFFileDownloaderCommonResultModel *validResult = [self judgeValidDownloadFile:fileModel];
     if (validResult.status < 0) {
         return validResult;
@@ -59,18 +74,18 @@
             if (insertModel.status < 0) {
                 return insertModel;
             } else {
-                return [self preStartDownloadWithFileModel:fileModel];
+                return [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
             }
         } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
-            return [self preStartDownloadWithFileModel:fileModel1];
+            return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
         }
     }
     return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知错误, 请更新版本" data:@""];
 }
 
 + (MFFileDownloaderCommonResultModel *)judgeValidDownloadFile:(MFFileDownloaderFileModel *)fileModel {
-    if ([MFFileDownloaderTool isStringNotNull:fileModel.url]) {
+    if (![MFFileDownloaderTool isStringNotNull:fileModel.url]) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"url 不合法" data:@""];
     }
     NSString *fileName = fileModel.name;
@@ -91,19 +106,90 @@
     return [MFFileDownloaderCommonResultModel modelWithStatus:0 msg:@"" data:@"Success"];
 }
 
-+ (MFFileDownloaderCommonResultModel *)preStartDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel {
-
-    fileModel.downloadStatus = 1;
++ (MFFileDownloaderCommonResultModel *)preStartDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel
+                                                         resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
+    fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
+    if (![MFFileDownloaderTool isStringNotNull:fileModel.id]) {
+        MFFileDownloaderCommonResultModel *searchResult = [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url];
+        if ([searchResult.data isKindOfClass:[NSArray class]]) {
+            NSArray *list = searchResult.data;
+            if (list.count > 0) {
+                MFFileDownloaderFileModel *fileModel1 = list.firstObject;
+                fileModel.id = fileModel1.id;
+                fileModel.status = fileModel1.status;
+                fileModel.version = fileModel1.version;
+                fileModel.localPath = fileModel1.localPath;
+            }
+        }
+    }
     MFFileDownloaderCommonResultModel *updateResult = [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
     if (updateResult.status < 0) {
         return updateResult;
     }
-    [self startDownloadWithUrl:fileModel.url filePath:fileModel.localPath];
+    [self startDownloadWithFileModel:fileModel resultBlock:resultBlock];
     return [MFFileDownloaderCommonResultModel modelWithStatus:0 msg:@"" data:fileModel];
 
 }
 
-+ (void)startDownloadWithUrl:(NSString *)url filePath:(NSString *)filePath {
++ (void)startDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel
+                       resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
+
+    /**
+     * TODO:- 这里后面会换成UNIT文件进行管理， 可以设计最大任务数量以及断点续传的功能
+     * 目前赶时间, 后面再说, 先完成基本功能
+     */
+
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fileModel.url]];
+
+    NSURLSessionDownloadTask *task = [AFHTTPSessionManager.manager downloadTaskWithRequest:request
+                                                 progress:^(NSProgress *downloadProgress) {
+                                                     if (fileModel.downloadStatus != MFFileDownloaderDownloadStatusDownloading) {
+                                                         fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
+                                                         [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                     }
+                                                     if (!resultBlock) {
+                                                         return;
+                                                     }
+                                                     resultBlock(
+                                                             [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                                                                      downloadStatus:MFFileDownloaderDownloadStatusDownloading
+                                                                                                            progress:downloadProgress]
+                                                     );
+                                                 }
+                                              destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+                                                  NSString *documentPath = MFFileDownloaderFMDBManager.documentBaseDirection;
+                                                  NSString *localPath = [NSString stringWithFormat:@"%@/%@", documentPath, fileModel.localPath];
+                                                  return [NSURL fileURLWithPath:localPath];
+                                              }
+                                        completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+
+                                            if (error) {
+                                                fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
+                                                [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                            } else {
+                                                fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
+                                                [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                            }
+                                            if (!resultBlock) {
+                                                return;
+                                            }
+                                            if (error) {
+                                                resultBlock(
+                                                        [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                                                             downloadStatus:MFFileDownloaderDownloadStatusDownloadError
+                                                                                             error:error]
+                                                );
+                                                return;
+                                            }
+                                            fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
+                                            [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                            resultBlock(
+                                                    [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                                                         downloadStatus:MFFileDownloaderDownloadStatusDownloadFinish]
+                                            );
+                                        }];
+    [task resume];
+//    AFNet
 
 }
 

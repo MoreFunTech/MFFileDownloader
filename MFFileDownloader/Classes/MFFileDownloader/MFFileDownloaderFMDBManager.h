@@ -27,6 +27,12 @@
 + (NSString *)dataBaseDirection;
 
 /**
+ * 文件管理根目录
+ * @return
+ */
++ (NSString *)documentBaseDirection;
+
+/**
  * 判断地址是否可用
  * @param direction
  * @return
