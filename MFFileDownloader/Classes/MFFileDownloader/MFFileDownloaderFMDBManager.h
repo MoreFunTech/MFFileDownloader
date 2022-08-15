@@ -22,7 +22,7 @@
 
 /**
  * 文件管理根目录
- * @return
+ * @return 返回管理器根目录
  */
 + (NSString *)dataBaseDirection;
 
@@ -34,14 +34,14 @@
 
 /**
  * 判断地址是否可用
- * @param direction
- * @return
+ * @param direction 被判断的地址
+ * @return 返回可用不可用
  */
 + (BOOL)isDirectionExit:(NSString *)direction;
 
 /**
  * 创建表的SQL语句
- * @return
+ * @return sqlStr
  */
 + (NSString *)sqlStrCreateTableFile;
 
@@ -71,13 +71,12 @@
 
 /**
  * 查询数据
- * @param url 根据url进行查询
+ * @param id 根据url进行查询
  */
 + (MFFileDownloaderCommonResultModel *)searchDataWithId:(NSString *)id;
 
 /**
  * 查询数据
- * @param url 根据url进行查询
  */
 + (MFFileDownloaderCommonResultModel *)getAllData;
 
