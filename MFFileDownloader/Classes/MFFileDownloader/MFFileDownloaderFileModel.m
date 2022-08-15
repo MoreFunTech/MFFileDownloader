@@ -5,6 +5,7 @@
 #import "MFFileDownloaderFileModel.h"
 #import "MFFileDownloaderTool.h"
 #import "MFFileDownloaderCommonResultModel.h"
+#import "MFFileDownloaderFMDBManager.h"
 
 
 @implementation MFFileDownloaderFileModel {
@@ -128,6 +129,10 @@
                                                          data:data];
 }
 
+- (NSString *)fullLocalPath {
+    return [NSString stringWithFormat:@"%@/%@", MFFileDownloaderFMDBManager.documentBaseDirection, self.localPath];
+}
+
 - (NSString *)description {
     NSMutableString *description = [NSMutableString stringWithFormat:@"<%@: ", NSStringFromClass([self class])];
     [description appendFormat:@"  self.id=%@ \r", self.id];
@@ -140,7 +145,7 @@
     [description appendFormat:@"  self.imageHeight=%lf \r", self.imageHeight];
     [description appendFormat:@"  self.status=%i \r", self.status];
     [description appendFormat:@"  self.version=%i \r", self.version];
-    [description appendFormat:@"  self.downloadStatus=%i \r", self.downloadStatus];
+    [description appendFormat:@"  self.downloadStatus=%ld \r", (long) self.downloadStatus];
     [description appendFormat:@"  self.createDate=%@ \r", self.createDate];
     [description appendFormat:@"  self.updateDate=%@ \r", self.updateDate];
     [description appendFormat:@"  self.localPath=%@ \r", self.localPath];

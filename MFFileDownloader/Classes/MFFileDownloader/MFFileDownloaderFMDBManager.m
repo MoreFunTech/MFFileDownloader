@@ -36,6 +36,21 @@
         BOOL isCreateSuccess = [self.database executeUpdate:createSqlStr];
         if (isCreateSuccess) {
             MFFileDownloaderLog.logDebug(@"表打开成功");
+
+            /**
+             * 将所有未成功的下载全部标记为默认状态
+             */
+            NSString *tableName = MFFileDownloaderFMDBManager.tableName;
+            NSMutableString *tempSqlStr = [NSMutableString string];
+            [tempSqlStr appendString:@"UPDATE [tableName]"];
+            [tempSqlStr appendString:@" SET"];
+            [tempSqlStr appendString:@" download_status = 0"];
+            [tempSqlStr appendString:@" WHERE download_status in ( 1 , 3 );"];
+            NSString *defaultSQLStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
+            BOOL isDefaultSuccess = [self.database executeUpdate:defaultSQLStr];
+            if (isDefaultSuccess) {
+                MFFileDownloaderLog.logDebug(@"表默认配置成功");
+            }
         } else {
             MFFileDownloaderLog.logDebug(@"表打开失败");
         }
@@ -43,10 +58,15 @@
 }
 
 + (NSString *)dataBaseDirection {
-    NSString *rootDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+//    NSString *rootDirectory = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+    NSString *rootDirectory = @"";
     rootDirectory = [rootDirectory stringByAppendingPathComponent:@"MFPodFiles"];
     rootDirectory = [rootDirectory stringByAppendingPathComponent:@"FileDownloader"];
     return rootDirectory;
+}
+
++ (NSString *)documentBaseDirection {
+    return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
 }
 
 + (BOOL)isDirectionExit:(NSString *)direction {
@@ -124,6 +144,8 @@
         if ([result.data isKindOfClass:[NSArray class]]) {
             NSArray *list = result.data;
             if (list.count > 0) {
+                MFFileDownloaderFileModel *resultModel = list.firstObject;
+                fileModel.localPath = resultModel.localPath;
                 int resStatus = -1;
                 NSString *resData = @"Failure";
                 NSString *resMsg = [NSString stringWithFormat:@"数据插入失败: %@", @"数据已存在"];
@@ -137,7 +159,8 @@
     NSString *local_path = fileModel.localPath;
     if (![MFFileDownloaderTool isStringNotNull:local_path]) {
         NSString *basePath = [MFFileDownloaderFMDBManager dataBaseDirection];
-        if ([MFFileDownloaderFMDBManager isDirectionExit:basePath]) {
+        NSString *fullBasePath = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], basePath];
+        if ([MFFileDownloaderFMDBManager isDirectionExit:fullBasePath]) {
             local_path = [NSString stringWithFormat:@"%@/%@", basePath, fileModel.name];
         }
     }
@@ -195,7 +218,8 @@
     NSString *local_path = fileModel.localPath;
     if (![MFFileDownloaderTool isStringNotNull:local_path]) {
         NSString *basePath = [MFFileDownloaderFMDBManager dataBaseDirection];
-        if ([MFFileDownloaderFMDBManager isDirectionExit:basePath]) {
+        NSString *fullBasePath = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], basePath];
+        if ([MFFileDownloaderFMDBManager isDirectionExit:fullBasePath]) {
             local_path = [NSString stringWithFormat:@"%@/%@", basePath, fileModel.name];
         }
     }
@@ -266,7 +290,7 @@
             model.url = [NSString stringWithFormat:@"%@", [set stringForColumn:@"url"]];
             model.furUrl = [NSString stringWithFormat:@"%@", [set stringForColumn:@"fur_url"]];
             model.localPath = [NSString stringWithFormat:@"%@", [set stringForColumn:@"local_path"]];
-            model.downloadStatus = [set intForColumn:@"download_status"];
+            model.downloadStatus = (MFFileDownloaderDownloadStatus) [set intForColumn:@"download_status"];
             model.mediaType = [set intForColumn:@"media_type"];
             model.during = [set doubleForColumn:@"during"];
             model.imageWidth = [set doubleForColumn:@"image_width"];
@@ -274,7 +298,7 @@
             model.status = [set intForColumn:@"status"];
             model.version = [set intForColumn:@"version"];
             model.createDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"create_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
-            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"updateDate"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"update_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
             [list addObject:model];
         }
     }
@@ -300,7 +324,7 @@
             model.url = [NSString stringWithFormat:@"%@", [set stringForColumn:@"url"]];
             model.furUrl = [NSString stringWithFormat:@"%@", [set stringForColumn:@"fur_url"]];
             model.localPath = [NSString stringWithFormat:@"%@", [set stringForColumn:@"local_path"]];
-            model.downloadStatus = [set intForColumn:@"download_status"];
+            model.downloadStatus = (MFFileDownloaderDownloadStatus) [set intForColumn:@"download_status"];
             model.mediaType = [set intForColumn:@"media_type"];
             model.during = [set doubleForColumn:@"during"];
             model.imageWidth = [set doubleForColumn:@"image_width"];
@@ -308,7 +332,7 @@
             model.status = [set intForColumn:@"status"];
             model.version = [set intForColumn:@"version"];
             model.createDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"create_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
-            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"updateDate"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"update_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
             [list addObject:model];
         }
     }
@@ -333,7 +357,7 @@
             model.url = [NSString stringWithFormat:@"%@", [set stringForColumn:@"url"]];
             model.furUrl = [NSString stringWithFormat:@"%@", [set stringForColumn:@"fur_url"]];
             model.localPath = [NSString stringWithFormat:@"%@", [set stringForColumn:@"local_path"]];
-            model.downloadStatus = [set intForColumn:@"download_status"];
+            model.downloadStatus = (MFFileDownloaderDownloadStatus) [set intForColumn:@"download_status"];
             model.mediaType = [set intForColumn:@"media_type"];
             model.during = [set doubleForColumn:@"during"];
             model.imageWidth = [set doubleForColumn:@"image_width"];
@@ -341,7 +365,7 @@
             model.status = [set intForColumn:@"status"];
             model.version = [set intForColumn:@"version"];
             model.createDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"create_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
-            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"updateDate"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"update_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
             [list addObject:model];
         }
     }
@@ -358,6 +382,7 @@
 - (FMDatabase *)database {
     if (!_database) {
         NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
+        path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
         if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
             NSString *dataBasePath = [NSString stringWithFormat:@"%@/%@", path, MFFileDownloaderFMDBManager.dataBaseName];
             MFFileDownloaderLog.logDebug(dataBasePath);
