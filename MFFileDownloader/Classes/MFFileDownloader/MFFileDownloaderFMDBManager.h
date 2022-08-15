@@ -28,7 +28,7 @@
 
 /**
  * 文件管理根目录
- * @return
+ * @return 基础根目录
  */
 + (NSString *)documentBaseDirection;
 
