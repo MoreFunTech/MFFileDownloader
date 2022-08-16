@@ -27,7 +27,7 @@
 @property (nonatomic, copy) NSString *url;
 
 /**
- * 文件完整地址（主要针对视频）
+ * 拓展字段 （暂时无用）
  */
 @property (nonatomic, copy) NSString *furUrl;
 

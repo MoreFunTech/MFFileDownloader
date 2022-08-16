@@ -111,9 +111,6 @@
     if (fileModel.mediaType < 1) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"mediaType 不合法" data:@""];
     }
-    if (fileModel.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:fileModel.furUrl]) {
-        return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"furUrl 不合法" data:@""];
-    }
     [MFFileDownloaderFMDBManager defaultConfigure];
     fileModel.name = fileName;
     return [MFFileDownloaderCommonResultModel modelWithStatus:0 msg:@"" data:@"Success"];
