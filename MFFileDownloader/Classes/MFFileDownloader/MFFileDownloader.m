@@ -78,6 +78,11 @@
             }
         } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
+            NSError *error;
+            BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtPath:fileModel1.localPath error:&error];
+            if (!removeSuccess || error) {
+                return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
+            }
             return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
         }
     }
@@ -110,9 +115,6 @@
     }
     if (fileModel.mediaType < 1) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"mediaType 不合法" data:@""];
-    }
-    if (fileModel.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:fileModel.furUrl]) {
-        return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"furUrl 不合法" data:@""];
     }
     [MFFileDownloaderFMDBManager defaultConfigure];
     fileModel.name = fileName;
