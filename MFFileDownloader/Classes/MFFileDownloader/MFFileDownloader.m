@@ -78,6 +78,11 @@
             }
         } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
+            NSError *error;
+            BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtPath:fileModel1.localPath error:&error];
+            if (!removeSuccess || error) {
+                return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
+            }
             return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
         }
     }
