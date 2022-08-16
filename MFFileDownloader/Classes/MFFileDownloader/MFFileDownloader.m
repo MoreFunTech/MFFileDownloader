@@ -84,6 +84,19 @@
     return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知错误, 请更新版本" data:@""];
 }
 
++ (MFFileDownloaderCommonResultModel *)getAllData {
+    return [MFFileDownloaderFMDBManager getAllData];
+}
+
++ (MFFileDownloaderCommonResultModel *)getAllDownloadedData {
+    return [MFFileDownloaderFMDBManager getAllDownloadedData];;
+}
+
++ (MFFileDownloaderCommonResultModel *)getAllDownloadingData {
+    return [MFFileDownloaderFMDBManager getAllDownloadingData];;
+}
+
+
 + (MFFileDownloaderCommonResultModel *)judgeValidDownloadFile:(MFFileDownloaderFileModel *)fileModel {
     if (![MFFileDownloaderTool isStringNotNull:fileModel.url]) {
         return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"url 不合法" data:@""];
@@ -142,52 +155,52 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fileModel.url]];
 
     NSURLSessionDownloadTask *task = [AFHTTPSessionManager.manager downloadTaskWithRequest:request
-                                                 progress:^(NSProgress *downloadProgress) {
-                                                     if (fileModel.downloadStatus != MFFileDownloaderDownloadStatusDownloading) {
-                                                         fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
-                                                         [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-                                                     }
-                                                     if (!resultBlock) {
-                                                         return;
-                                                     }
-                                                     resultBlock(
-                                                             [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                                                                      downloadStatus:MFFileDownloaderDownloadStatusDownloading
-                                                                                                            progress:downloadProgress]
-                                                     );
-                                                 }
-                                              destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
-                                                  NSString *documentPath = MFFileDownloaderFMDBManager.documentBaseDirection;
-                                                  NSString *localPath = [NSString stringWithFormat:@"%@/%@", documentPath, fileModel.localPath];
-                                                  return [NSURL fileURLWithPath:localPath];
-                                              }
-                                        completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+                                                                                  progress:^(NSProgress *downloadProgress) {
+                                                                                      if (fileModel.downloadStatus != MFFileDownloaderDownloadStatusDownloading) {
+                                                                                          fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
+                                                                                          [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                      }
+                                                                                      if (!resultBlock) {
+                                                                                          return;
+                                                                                      }
+                                                                                      resultBlock(
+                                                                                              [MFFileDownloaderDownloadResultModel           modelWithFileModel:fileModel
+                                                                                                                                       downloadStatus:MFFileDownloaderDownloadStatusDownloading
+                                                                                                                                             progress:downloadProgress]
+                                                                                      );
+                                                                                  }
+                                                                               destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+                                                                                   NSString *documentPath = MFFileDownloaderFMDBManager.documentBaseDirection;
+                                                                                   NSString *localPath = [NSString stringWithFormat:@"%@/%@", documentPath, fileModel.localPath];
+                                                                                   return [NSURL fileURLWithPath:localPath];
+                                                                               }
+                                                                         completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
 
-                                            if (error) {
-                                                fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
-                                                [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-                                            } else {
-                                                fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
-                                                [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-                                            }
-                                            if (!resultBlock) {
-                                                return;
-                                            }
-                                            if (error) {
-                                                resultBlock(
-                                                        [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                                                             downloadStatus:MFFileDownloaderDownloadStatusDownloadError
-                                                                                             error:error]
-                                                );
-                                                return;
-                                            }
-                                            fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
-                                            [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-                                            resultBlock(
-                                                    [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                                                         downloadStatus:MFFileDownloaderDownloadStatusDownloadFinish]
-                                            );
-                                        }];
+                                                                             if (error) {
+                                                                                 fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
+                                                                                 [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                             } else {
+                                                                                 fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
+                                                                                 [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                             }
+                                                                             if (!resultBlock) {
+                                                                                 return;
+                                                                             }
+                                                                             if (error) {
+                                                                                 resultBlock(
+                                                                                         [MFFileDownloaderDownloadResultModel              modelWithFileModel:fileModel
+                                                                                                                                  downloadStatus:MFFileDownloaderDownloadStatusDownloadError
+                                                                                                                                           error:error]
+                                                                                 );
+                                                                                 return;
+                                                                             }
+                                                                             fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
+                                                                             [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                             resultBlock(
+                                                                                     [MFFileDownloaderDownloadResultModel     modelWithFileModel:fileModel
+                                                                                                                              downloadStatus:MFFileDownloaderDownloadStatusDownloadFinish]
+                                                                             );
+                                                                         }];
     [task resume];
 //    AFNet
 

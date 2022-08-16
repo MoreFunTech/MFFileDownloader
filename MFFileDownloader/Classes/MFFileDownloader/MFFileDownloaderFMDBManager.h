@@ -80,6 +80,18 @@
  */
 + (MFFileDownloaderCommonResultModel *)getAllData;
 
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadedData;
+
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadingData;
+
+
+
 
 
 @end
