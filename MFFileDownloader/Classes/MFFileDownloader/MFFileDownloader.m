@@ -79,7 +79,8 @@
         } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
             NSError *error;
-            BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtPath:fileModel1.localPath error:&error];
+            NSURL *pathUrl = [NSURL fileURLWithPath:fileModel1.fullLocalPath];
+            BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtURL:pathUrl error:&error];
             if (!removeSuccess || error) {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
             }
