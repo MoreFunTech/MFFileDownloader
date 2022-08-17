@@ -102,6 +102,9 @@
     return [MFFileDownloaderFMDBManager getAllDownloadingData];;
 }
 
++ (void)clearAllDownloadFiles {
+    [MFFileDownloaderFMDBManager clearAllDownloadFiles];
+}
 
 + (MFFileDownloaderCommonResultModel *)judgeValidDownloadFile:(MFFileDownloaderFileModel *)fileModel {
     if (![MFFileDownloaderTool isStringNotNull:fileModel.url]) {

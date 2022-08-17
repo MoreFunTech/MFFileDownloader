@@ -59,6 +59,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (MFFileDownloaderCommonResultModel *)getAllDownloadingData;
 
+/**
+ * 清空所有下载的文件
+ */
++ (void)clearAllDownloadFiles;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

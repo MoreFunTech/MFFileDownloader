@@ -441,6 +441,18 @@
     return [MFFileDownloaderCommonResultModel modelWithStatus:resStatus msg:resMsg data:resData];
 }
 
++ (void)clearAllDownloadFiles {
+    NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
+    path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
+    if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
+        NSError *error = nil;
+        [MFFileDownloaderFMDBManager.sharedInstance.database close];
+        BOOL isClearSuccess = [NSFileManager.defaultManager removeItemAtPath:path error:&error];
+        MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = NO;
+        MFFileDownloaderFMDBManager.sharedInstance.database = nil;
+        [MFFileDownloaderFMDBManager defaultConfigure];
+    }
+}
 
 + (FMDatabase *)database {
     return MFFileDownloaderFMDBManager.sharedInstance.database;
