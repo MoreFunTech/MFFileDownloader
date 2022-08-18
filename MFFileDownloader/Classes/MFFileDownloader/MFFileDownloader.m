@@ -22,6 +22,7 @@
     if (validResult.status < 0) {
         return validResult;
     }
+
     MFFileDownloaderCommonResultModel *searchModel = [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url];
     if (searchModel.status < 0) {
         return searchModel;
@@ -164,7 +165,10 @@
                                                                                   progress:^(NSProgress *downloadProgress) {
                                                                                       if (fileModel.downloadStatus != MFFileDownloaderDownloadStatusDownloading) {
                                                                                           fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
-                                                                                          [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                          dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                          dispatch_async(queue, ^{
+                                                                                              [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                          });
                                                                                       }
                                                                                       if (!resultBlock) {
                                                                                           return;
@@ -184,10 +188,16 @@
 
                                                                              if (error) {
                                                                                  fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
-                                                                                 [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                 dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                 dispatch_async(queue, ^{
+                                                                                     [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                 });
                                                                              } else {
                                                                                  fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
-                                                                                 [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                 dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                 dispatch_async(queue, ^{
+                                                                                     [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
+                                                                                 });
                                                                              }
                                                                              if (!resultBlock) {
                                                                                  return;
