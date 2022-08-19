@@ -165,7 +165,7 @@
                                                                                   progress:^(NSProgress *downloadProgress) {
                                                                                       if (fileModel.downloadStatus != MFFileDownloaderDownloadStatusDownloading) {
                                                                                           fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
-                                                                                          dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                          dispatch_queue_t queue = dispatch_get_main_queue();
                                                                                           dispatch_async(queue, ^{
                                                                                               [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
                                                                                           });
@@ -188,13 +188,13 @@
 
                                                                              if (error) {
                                                                                  fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
-                                                                                 dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                 dispatch_queue_t queue = dispatch_get_main_queue();
                                                                                  dispatch_async(queue, ^{
                                                                                      [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
                                                                                  });
                                                                              } else {
                                                                                  fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
-                                                                                 dispatch_queue_t queue = dispatch_queue_create("MFKit.FileDownloader.downloader", 0);
+                                                                                 dispatch_queue_t queue = dispatch_get_main_queue();
                                                                                  dispatch_async(queue, ^{
                                                                                      [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
                                                                                  });
