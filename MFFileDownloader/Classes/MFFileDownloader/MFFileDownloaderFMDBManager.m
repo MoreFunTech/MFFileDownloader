@@ -10,6 +10,7 @@
 
 @property(nonatomic, strong) FMDatabase *database;
 @property (nonatomic, assign) BOOL hasFinishConfig;
+//@property (nonatomic) dispatch_queue_t queue;
 
 @end
 
@@ -30,31 +31,34 @@
     if (MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig) {
         return;
     }
-    MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = YES;
-    NSString *createSqlStr = self.sqlStrCreateTableFile;
-    if (self.database.open) {
-        BOOL isCreateSuccess = [self.database executeUpdate:createSqlStr];
-        if (isCreateSuccess) {
-            MFFileDownloaderLog.logDebug(@"表打开成功");
 
-            /**
-             * 将所有未成功的下载全部标记为默认状态
-             */
-            NSString *tableName = MFFileDownloaderFMDBManager.tableName;
-            NSMutableString *tempSqlStr = [NSMutableString string];
-            [tempSqlStr appendString:@"UPDATE [tableName]"];
-            [tempSqlStr appendString:@" SET"];
-            [tempSqlStr appendString:@" download_status = 0"];
-            [tempSqlStr appendString:@" WHERE download_status in ( 1 , 3 );"];
-            NSString *defaultSQLStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
-            BOOL isDefaultSuccess = [self.database executeUpdate:defaultSQLStr];
-            if (isDefaultSuccess) {
-                MFFileDownloaderLog.logDebug(@"表默认配置成功");
+//    dispatch_async(MFFileDownloaderFMDBManager.sharedInstance.queue, ^{
+        MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = YES;
+        NSString *createSqlStr = self.sqlStrCreateTableFile;
+        if (self.database.open) {
+            BOOL isCreateSuccess = [self.database executeUpdate:createSqlStr];
+            if (isCreateSuccess) {
+                MFFileDownloaderLog.logDebug(@"表打开成功");
+
+                /**
+                 * 将所有未成功的下载全部标记为默认状态
+                 */
+                NSString *tableName = MFFileDownloaderFMDBManager.tableName;
+                NSMutableString *tempSqlStr = [NSMutableString string];
+                [tempSqlStr appendString:@"UPDATE [tableName]"];
+                [tempSqlStr appendString:@" SET"];
+                [tempSqlStr appendString:@" download_status = 0"];
+                [tempSqlStr appendString:@" WHERE download_status in ( 1 , 3 );"];
+                NSString *defaultSQLStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
+                BOOL isDefaultSuccess = [self.database executeUpdate:defaultSQLStr];
+                if (isDefaultSuccess) {
+                    MFFileDownloaderLog.logDebug(@"表默认配置成功");
+                }
+            } else {
+                MFFileDownloaderLog.logDebug(@"表打开失败");
             }
-        } else {
-            MFFileDownloaderLog.logDebug(@"表打开失败");
         }
-    }
+//    });
 }
 
 + (NSString *)dataBaseDirection {
@@ -460,13 +464,15 @@
 
 - (FMDatabase *)database {
     if (!_database) {
-        NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
-        path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
-        if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
-            NSString *dataBasePath = [NSString stringWithFormat:@"%@/%@", path, MFFileDownloaderFMDBManager.dataBaseName];
-            MFFileDownloaderLog.logDebug(dataBasePath);
-            _database = [FMDatabase databaseWithPath:dataBasePath];
-        }
+//        dispatch_async(_queue, ^{
+            NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
+            path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
+            if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
+                NSString *dataBasePath = [NSString stringWithFormat:@"%@/%@", path, MFFileDownloaderFMDBManager.dataBaseName];
+                MFFileDownloaderLog.logDebug(dataBasePath);
+                _database = [FMDatabase databaseWithPath:dataBasePath];
+            }
+//        });
     }
     return _database;
 }
