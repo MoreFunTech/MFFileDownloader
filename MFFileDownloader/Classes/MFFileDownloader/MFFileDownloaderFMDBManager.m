@@ -10,6 +10,7 @@
 
 @property(nonatomic, strong) FMDatabase *database;
 @property (nonatomic, assign) BOOL hasFinishConfig;
+//@property (nonatomic) dispatch_queue_t queue;
 
 @end
 
@@ -31,7 +32,7 @@
         return;
     }
 
-    dispatch_async(MFFileDownloaderFMDBManager.sharedInstance.queue, ^{
+//    dispatch_async(MFFileDownloaderFMDBManager.sharedInstance.queue, ^{
         MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = YES;
         NSString *createSqlStr = self.sqlStrCreateTableFile;
         if (self.database.open) {
@@ -57,7 +58,7 @@
                 MFFileDownloaderLog.logDebug(@"表打开失败");
             }
         }
-    }
+//    });
 }
 
 + (NSString *)dataBaseDirection {
