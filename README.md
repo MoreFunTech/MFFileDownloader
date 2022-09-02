@@ -1,5 +1,7 @@
 # MFFileDownloader
 
+![Logo](https://github.com/MoreFunTech/MFFileDownloader/blob/main/icons/logo.png?raw=true)
+
 [![CI Status](https://img.shields.io/travis/NealWills/MFFileDownloader.svg?style=flat)](https://travis-ci.org/NealWills/MFFileDownloader)
 [![Version](https://img.shields.io/cocoapods/v/MFFileDownloader.svg?style=flat)](https://cocoapods.org/pods/MFFileDownloader)
 [![License](https://img.shields.io/cocoapods/l/MFFileDownloader.svg?style=flat)](https://cocoapods.org/pods/MFFileDownloader)
