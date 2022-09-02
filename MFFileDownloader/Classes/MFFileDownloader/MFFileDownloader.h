@@ -44,6 +44,26 @@ NS_ASSUME_NONNULL_BEGIN
 + (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel
                                           resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock;
 
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllData;
+
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadedData;
+
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadingData;
+
+/**
+ * 清空所有下载的文件
+ */
++ (void)clearAllDownloadFiles;
+
 
 @end
 

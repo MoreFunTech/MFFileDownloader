@@ -25,35 +25,63 @@
     MFFileDownloaderLog.setMinLogLevel(MFFileDownloaderLogLevelNormal);
     [MFFileDownloaderFMDBManager defaultConfigure];
 
-    MFFileDownloaderFileModel *fileModel = [[MFFileDownloaderFileModel alloc] init];
-    fileModel.url = @"https://ruiqu-1304540262.sutanapp.com/386e3c4e5da14269554fa547a9302066.pag";
-    fileModel.mediaType = 6;
-    fileModel.name = @"test.pag";
-    MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
-        switch (model.downloadStatus) {
-            case MFFileDownloaderDownloadStatusDownloadNot:
-                MFFileDownloaderLog.logDebug(@"未下载");
-                break;
-            case MFFileDownloaderDownloadStatusDownloading:
-                MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载中 [%@]: %lli - %lli", model.fileModel.fullLocalPath, model.progress.completedUnitCount, model.progress.totalUnitCount]);
-                break;
-            case MFFileDownloaderDownloadStatusDownloadFinish:
-                MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载完成 [%@]", model.fileModel.fullLocalPath]);
-                break;
-            case MFFileDownloaderDownloadStatusDownloadError:
-                MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
-                break;
+
+    NSArray *downloadList = @[
+            @"https://xidi-1251320985.sutanapp.com/7e9536cbcfbd150a5637e9f7929fe7ed",
+            @"https://xidi-1251320985.sutanapp.com/3ac75690e01ada4094f298e97ed5901a",
+            @"https://xidi-1251320985.sutanapp.com/d26c8fbe6429482d7e56d2e98ab7772b",
+            @"https://ruiqu-1304540262.sutanapp.com/3364b369f42fc96e6fc539aef0e65c0b.svga",
+            @"https://xidi-1251320985.sutanapp.com/05d13b00aca20d9dbbf2ed4ed974d843",
+            @"https://xidi-1251320985.sutanapp.com/ba7fd9c2a33caf879d75d8dd7089cf28",
+            @"https://xidi-1251320985.sutanapp.com/3cd4e853c9b7c83e45de273c946c6e41",
+            @"https://xidi-1251320985.sutanapp.com/eca91c4504d46486cdff415aca8ffdae",
+            @"https://ruiqu-1304540262.picgz.myqcloud.com/7a290b3f42442c13a23c74af3f8715a5",
+            @"https://xidi-1251320985.sutanapp.com/46f08dd28908acd4b58dbd3373ce6b1c",
+            @"https://xidi-1251320985.sutanapp.com/617636546ee7337d19c6caf3772955d3",
+            @"https://xidi-1251320985.sutanapp.com/521c181cca506bcde5327bc59a897f8a",
+            @"https://xidi-1251320985.sutanapp.com/86ecf6d791f4bce6beb1baa62d7f3dff",
+            @"https://ruiqu-1304540262.sutanapp.com/cb8b4ad7755390853249455ec1ea4a02.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/e2b60115272c2ba199315d92bb7cb330.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/cc2585370db795fa0e464c157157e4b4.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/4b2b0a0f054f73292d98d8ab5ea19676.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/91a0943c02f2cf7b201e16c706001f77.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/76133556b6aeca3088fdb705be9fbb14.svga",
+            @"https://ruiqu-1304540262.sutanapp.com/ec999da559be82327047f5d37549be2f.svga",
+    ];
+
+    for (int i = 0; i < downloadList.count; ++i) {
+        MFFileDownloaderFileModel *fileModel = [[MFFileDownloaderFileModel alloc] init];
+        fileModel.url = downloadList[i];
+        fileModel.mediaType = 5;
+//        fileModel.name = @"test.pag";
+        MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
+            switch (model.downloadStatus) {
+                case MFFileDownloaderDownloadStatusDownloadNot:
+                    MFFileDownloaderLog.logDebug(@"未下载");
+                    break;
+                case MFFileDownloaderDownloadStatusDownloading:
+                    MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载中 [%@]: %lli - %lli", model.fileModel.fullLocalPath, model.progress.completedUnitCount, model.progress.totalUnitCount]);
+                    break;
+                case MFFileDownloaderDownloadStatusDownloadFinish:
+                    MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载完成 [%@]", model.fileModel.fullLocalPath]);
+                    break;
+                case MFFileDownloaderDownloadStatusDownloadError:
+                    MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
+                    break;
+            }
+        }];
+        if ([downloadResult.data isKindOfClass:[MFFileDownloaderFileModel class]]) {
+            MFFileDownloaderFileModel *model = downloadResult.data;
+            fileModel.localPath = model.localPath;
         }
-    }];
-    if ([downloadResult.data isKindOfClass:[MFFileDownloaderFileModel class]]) {
-        MFFileDownloaderFileModel *model = downloadResult.data;
-        fileModel.localPath = model.localPath;
+        if (downloadResult.status < 0) {
+            MFFileDownloaderLog.logError([NSString stringWithFormat:@"下载任务添加失败 [%@]: %@", fileModel.fullLocalPath, downloadResult.msg]);
+        } else {
+            MFFileDownloaderLog.logDebug(@"下载开始");
+        }
     }
-    if (downloadResult.status < 0) {
-        MFFileDownloaderLog.logError([NSString stringWithFormat:@"下载任务添加失败 [%@]: %@", fileModel.fullLocalPath, downloadResult.msg]);
-    } else {
-        MFFileDownloaderLog.logDebug(@"下载开始");
-    }
+
+
 
 //    MFFileDownloaderCommonResultModel *reDownloadResult = [MFFileDownloader reDownloadFile:fileModel];
 //    if (reDownloadResult.status < 0) {

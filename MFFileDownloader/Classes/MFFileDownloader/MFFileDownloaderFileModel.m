@@ -49,12 +49,9 @@
     } else if (![MFFileDownloaderTool isStringNotNull:self.url]) {
         status = -1;
         msg = @"url为空";
-    } else if (self.mediaType <= 0 || self.mediaType > 6) {
+    } else if (self.mediaType <= 0) {
         status = -1;
-        msg = [NSString stringWithFormat:@"mediaType需要为1~6, 当前为%d", self.mediaType];
-    } else if (self.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
-        status = -1;
-        msg = [NSString stringWithFormat:@"mediaType需要为2时furUrl不可为空"];
+        msg = [NSString stringWithFormat:@"mediaType需要为>0, 当前为%d", self.mediaType];
     } else if (self.status < 1) {
         status = -1;
         msg = [NSString stringWithFormat:@"未设置status 1 启用 2 未启用"];
@@ -80,12 +77,9 @@
     } else if (![MFFileDownloaderTool isStringNotNull:self.url]) {
         status = -1;
         msg = @"url为空";
-    } else if (self.mediaType <= 0 || self.mediaType > 6) {
+    } else if (self.mediaType <= 0) {
         status = -1;
-        msg = [NSString stringWithFormat:@"mediaType需要为1~6, 当前为%d", self.mediaType];
-    } else if (self.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
-        status = -1;
-        msg = [NSString stringWithFormat:@"mediaType需要为2时furUrl不可为空"];
+        msg = [NSString stringWithFormat:@"mediaType需要为>0, 当前为%d", self.mediaType];
     } else {
         status = 0;
         data = @"success";
@@ -108,9 +102,9 @@
     } else if (![MFFileDownloaderTool isStringNotNull:self.url]) {
         status = -1;
         msg = @"url为空";
-    } else if (self.mediaType <= 0 || self.mediaType > 6) {
+    } else if (self.mediaType <= 0) {
         status = -1;
-        msg = [NSString stringWithFormat:@"mediaType需要为1~6, 当前为%d", self.mediaType];
+        msg = [NSString stringWithFormat:@"mediaType需要为>0, 当前为%d", self.mediaType];
     } else if (self.mediaType == 2 && ![MFFileDownloaderTool isStringNotNull:self.furUrl]) {
         status = -1;
         msg = [NSString stringWithFormat:@"mediaType需要为2时furUrl不可为空"];

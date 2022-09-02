@@ -10,6 +10,7 @@
 
 @property(nonatomic, strong) FMDatabase *database;
 @property (nonatomic, assign) BOOL hasFinishConfig;
+//@property (nonatomic) dispatch_queue_t queue;
 
 @end
 
@@ -30,31 +31,34 @@
     if (MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig) {
         return;
     }
-    MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = YES;
-    NSString *createSqlStr = self.sqlStrCreateTableFile;
-    if (self.database.open) {
-        BOOL isCreateSuccess = [self.database executeUpdate:createSqlStr];
-        if (isCreateSuccess) {
-            MFFileDownloaderLog.logDebug(@"表打开成功");
 
-            /**
-             * 将所有未成功的下载全部标记为默认状态
-             */
-            NSString *tableName = MFFileDownloaderFMDBManager.tableName;
-            NSMutableString *tempSqlStr = [NSMutableString string];
-            [tempSqlStr appendString:@"UPDATE [tableName]"];
-            [tempSqlStr appendString:@" SET"];
-            [tempSqlStr appendString:@" download_status = 0"];
-            [tempSqlStr appendString:@" WHERE download_status in ( 1 , 3 );"];
-            NSString *defaultSQLStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
-            BOOL isDefaultSuccess = [self.database executeUpdate:defaultSQLStr];
-            if (isDefaultSuccess) {
-                MFFileDownloaderLog.logDebug(@"表默认配置成功");
+//    dispatch_async(MFFileDownloaderFMDBManager.sharedInstance.queue, ^{
+        MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = YES;
+        NSString *createSqlStr = self.sqlStrCreateTableFile;
+        if (self.database.open) {
+            BOOL isCreateSuccess = [self.database executeUpdate:createSqlStr];
+            if (isCreateSuccess) {
+                MFFileDownloaderLog.logDebug(@"表打开成功");
+
+                /**
+                 * 将所有未成功的下载全部标记为默认状态
+                 */
+                NSString *tableName = MFFileDownloaderFMDBManager.tableName;
+                NSMutableString *tempSqlStr = [NSMutableString string];
+                [tempSqlStr appendString:@"UPDATE [tableName]"];
+                [tempSqlStr appendString:@" SET"];
+                [tempSqlStr appendString:@" download_status = 0"];
+                [tempSqlStr appendString:@" WHERE download_status in ( 1 , 3 );"];
+                NSString *defaultSQLStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
+                BOOL isDefaultSuccess = [self.database executeUpdate:defaultSQLStr];
+                if (isDefaultSuccess) {
+                    MFFileDownloaderLog.logDebug(@"表默认配置成功");
+                }
+            } else {
+                MFFileDownloaderLog.logDebug(@"表打开失败");
             }
-        } else {
-            MFFileDownloaderLog.logDebug(@"表打开失败");
         }
-    }
+//    });
 }
 
 + (NSString *)dataBaseDirection {
@@ -375,19 +379,100 @@
     return [MFFileDownloaderCommonResultModel modelWithStatus:resStatus msg:resMsg data:resData];
 }
 
++ (MFFileDownloaderCommonResultModel *)getAllDownloadedData {
+    NSMutableArray *list = [NSMutableArray array];
+    NSMutableString *tempSqlStr = [NSMutableString string];
+    NSString *tableName = MFFileDownloaderFMDBManager.tableName;
+    [tempSqlStr appendString:@"SELECT * FROM [tableName] WHERE download_status = '2'"];
+    NSString *selectSqlStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
+    FMResultSet *set = [self.database executeQuery:selectSqlStr];
+    if (set) {
+        while (set.next) {
+            MFFileDownloaderFileModel *model = [[MFFileDownloaderFileModel alloc] init];
+            model.id = [NSString stringWithFormat:@"%d", [set intForColumn:@"id"]];
+            model.name = [NSString stringWithFormat:@"%@", [set stringForColumn:@"name"]];
+            model.url = [NSString stringWithFormat:@"%@", [set stringForColumn:@"url"]];
+            model.furUrl = [NSString stringWithFormat:@"%@", [set stringForColumn:@"fur_url"]];
+            model.localPath = [NSString stringWithFormat:@"%@", [set stringForColumn:@"local_path"]];
+            model.downloadStatus = (MFFileDownloaderDownloadStatus) [set intForColumn:@"download_status"];
+            model.mediaType = [set intForColumn:@"media_type"];
+            model.during = [set doubleForColumn:@"during"];
+            model.imageWidth = [set doubleForColumn:@"image_width"];
+            model.imageHeight = [set doubleForColumn:@"image_height"];
+            model.status = [set intForColumn:@"status"];
+            model.version = [set intForColumn:@"version"];
+            model.createDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"create_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"update_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            [list addObject:model];
+        }
+    }
+    int resStatus = 0;
+    NSArray *resData = list;
+    NSString *resMsg = @"";
+    return [MFFileDownloaderCommonResultModel modelWithStatus:resStatus msg:resMsg data:resData];
+}
+
++ (MFFileDownloaderCommonResultModel *)getAllDownloadingData {
+    NSMutableArray *list = [NSMutableArray array];
+    NSMutableString *tempSqlStr = [NSMutableString string];
+    NSString *tableName = MFFileDownloaderFMDBManager.tableName;
+    [tempSqlStr appendString:@"SELECT * FROM [tableName] WHERE download_status = '1'"];
+    NSString *selectSqlStr = [tempSqlStr stringByReplacingOccurrencesOfString:@"[tableName]" withString:tableName];
+    FMResultSet *set = [self.database executeQuery:selectSqlStr];
+    if (set) {
+        while (set.next) {
+            MFFileDownloaderFileModel *model = [[MFFileDownloaderFileModel alloc] init];
+            model.id = [NSString stringWithFormat:@"%d", [set intForColumn:@"id"]];
+            model.name = [NSString stringWithFormat:@"%@", [set stringForColumn:@"name"]];
+            model.url = [NSString stringWithFormat:@"%@", [set stringForColumn:@"url"]];
+            model.furUrl = [NSString stringWithFormat:@"%@", [set stringForColumn:@"fur_url"]];
+            model.localPath = [NSString stringWithFormat:@"%@", [set stringForColumn:@"local_path"]];
+            model.downloadStatus = (MFFileDownloaderDownloadStatus) [set intForColumn:@"download_status"];
+            model.mediaType = [set intForColumn:@"media_type"];
+            model.during = [set doubleForColumn:@"during"];
+            model.imageWidth = [set doubleForColumn:@"image_width"];
+            model.imageHeight = [set doubleForColumn:@"image_height"];
+            model.status = [set intForColumn:@"status"];
+            model.version = [set intForColumn:@"version"];
+            model.createDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"create_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            model.updateDate = [MFFileDownloaderTool dateWithString:[set stringForColumn:@"update_date"] format:@"YYYY-MM-DD HH:mm:ss.S"] ;
+            [list addObject:model];
+        }
+    }
+    int resStatus = 0;
+    NSArray *resData = list;
+    NSString *resMsg = @"";
+    return [MFFileDownloaderCommonResultModel modelWithStatus:resStatus msg:resMsg data:resData];
+}
+
++ (void)clearAllDownloadFiles {
+    NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
+    path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
+    if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
+        NSError *error = nil;
+        [MFFileDownloaderFMDBManager.sharedInstance.database close];
+        BOOL isClearSuccess = [NSFileManager.defaultManager removeItemAtPath:path error:&error];
+        MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = NO;
+        MFFileDownloaderFMDBManager.sharedInstance.database = nil;
+        [MFFileDownloaderFMDBManager defaultConfigure];
+    }
+}
+
 + (FMDatabase *)database {
     return MFFileDownloaderFMDBManager.sharedInstance.database;
 }
 
 - (FMDatabase *)database {
     if (!_database) {
-        NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
-        path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
-        if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
-            NSString *dataBasePath = [NSString stringWithFormat:@"%@/%@", path, MFFileDownloaderFMDBManager.dataBaseName];
-            MFFileDownloaderLog.logDebug(dataBasePath);
-            _database = [FMDatabase databaseWithPath:dataBasePath];
-        }
+//        dispatch_async(_queue, ^{
+            NSString *path = [MFFileDownloaderFMDBManager dataBaseDirection];
+            path = [NSString stringWithFormat:@"%@/%@", [MFFileDownloaderFMDBManager documentBaseDirection], path];
+            if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
+                NSString *dataBasePath = [NSString stringWithFormat:@"%@/%@", path, MFFileDownloaderFMDBManager.dataBaseName];
+                MFFileDownloaderLog.logDebug(dataBasePath);
+                _database = [FMDatabase databaseWithPath:dataBasePath];
+            }
+//        });
     }
     return _database;
 }

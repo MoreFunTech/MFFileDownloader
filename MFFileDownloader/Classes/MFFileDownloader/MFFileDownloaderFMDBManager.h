@@ -80,6 +80,20 @@
  */
 + (MFFileDownloaderCommonResultModel *)getAllData;
 
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadedData;
+
+/**
+ * 查询数据
+ */
++ (MFFileDownloaderCommonResultModel *)getAllDownloadingData;
+
+/**
+ * 清空所有下载的文件
+ */
++ (void)clearAllDownloadFiles;
 
 
 @end
