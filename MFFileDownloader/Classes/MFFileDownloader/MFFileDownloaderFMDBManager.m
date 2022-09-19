@@ -452,7 +452,7 @@
     if ([MFFileDownloaderFMDBManager isDirectionExit:path]) {
         NSError *error = nil;
         [MFFileDownloaderFMDBManager.sharedInstance.database close];
-        BOOL isClearSuccess = [NSFileManager.defaultManager removeItemAtPath:path error:&error];
+        [NSFileManager.defaultManager removeItemAtPath:path error:&error];
         MFFileDownloaderFMDBManager.sharedInstance.hasFinishConfig = NO;
         MFFileDownloaderFMDBManager.sharedInstance.database = nil;
         [MFFileDownloaderFMDBManager defaultConfigure];
