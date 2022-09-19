@@ -22,7 +22,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[self alloc] init];
-        [_sharedInstance defaultConfigure];
+        [MFFileDownloaderFMDBManager defaultConfigure];
     });
 
     return _sharedInstance;
