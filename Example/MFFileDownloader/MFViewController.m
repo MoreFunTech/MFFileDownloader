@@ -59,7 +59,7 @@
         fileModel.url = downloadList[i];
         fileModel.mediaType = 5;
 //        fileModel.name = @"test.pag";
-        MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
+        MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader reDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
             switch (model.downloadStatus) {
                 case MFFileDownloaderDownloadStatusDownloadNot:
                     MFFileDownloaderLog.logDebug(@"未下载");

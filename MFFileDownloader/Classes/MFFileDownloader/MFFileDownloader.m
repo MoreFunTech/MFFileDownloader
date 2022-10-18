@@ -84,8 +84,10 @@
             NSError *error;
             NSURL *pathUrl = [NSURL fileURLWithPath:fileModel1.fullLocalPath];
             BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtURL:pathUrl error:&error];
-            if (!removeSuccess || error) {
-                return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
+            if ([NSFileManager.defaultManager fileExistsAtPath:fileModel1.fullLocalPath]) {
+                if (!removeSuccess || error) {
+                    return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
+                }
             }
             return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
         }
