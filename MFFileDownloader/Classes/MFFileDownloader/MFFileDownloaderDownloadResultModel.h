@@ -4,19 +4,14 @@
 
 #import <Foundation/Foundation.h>
 
-@class MFFileDownloaderFileModel;
+#import "MFFileDownloaderHeader.h"
 
-typedef NS_ENUM(NSInteger, MFFileDownloaderDownloadStatus) {
-    MFFileDownloaderDownloadStatusDownloadNot = 0,
-    MFFileDownloaderDownloadStatusDownloading = 1,
-    MFFileDownloaderDownloadStatusDownloadFinish = 2,
-    MFFileDownloaderDownloadStatusDownloadError = 3,
-};
+@class MFFileDownloaderFileModel;
 
 @interface MFFileDownloaderDownloadResultModel : NSObject
 
 @property (nonatomic, strong) MFFileDownloaderFileModel *fileModel;
-@property (nonatomic, assign) MFFileDownloaderDownloadStatus downloadStatus;
+@property (nonatomic, assign) NSInteger downloadStatus;
 @property (nonatomic, strong) NSProgress *progress;
 @property (nonatomic, strong) NSError *error;
 

@@ -9,9 +9,11 @@
 //#import "MFFileDownloader.h"
 #import "MFViewController.h"
 
+#import "MFFileDownloaderManager.h"
+
 @import MFFileDownloader;
 
-@interface MFViewController ()
+@interface MFViewController () <MFFileDownloaderManagerProtocol>
 
 @end
 
@@ -24,10 +26,12 @@
     MFFileDownloaderLog.setModuleName(@"MFKit");
     MFFileDownloaderLog.setMinLogLevel(MFFileDownloaderLogLevelNormal);
     [MFFileDownloaderFMDBManager defaultConfigure];
+    
+    MFFileDownloaderManager.sharedInstance.pluginDelegate = self;
 
 
     NSArray *downloadList = @[
-            @"https://xidi-1251320985.sutanapp.com/7e9536cbcfbd150a5637e9f7929fe7ed",
+            @"https://xidi-1251320985.sutanapp.com/7e9536cbcfbd150a5637e9f7929fe7ed1",
             @"https://xidi-1251320985.sutanapp.com/3ac75690e01ada4094f298e97ed5901a",
             @"https://xidi-1251320985.sutanapp.com/d26c8fbe6429482d7e56d2e98ab7772b",
             @"https://ruiqu-1304540262.sutanapp.com/3364b369f42fc96e6fc539aef0e65c0b.svga",
@@ -132,6 +136,31 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+
+
+- (MFFileDownloaderPluginFirstDownloadFailureUnit *)firstDownloadFailWithUrl:(NSURL *)url {
+//
+    NSString *newUrl = @"https://xidi-1251320985.sutanapp.com/7e9536cbcfbd150a5637e9f7929fe7ed";
+    MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"重解析地址 [origin: %@ | new: %@]", url, newUrl]);
+    MFFileDownloaderPluginFirstDownloadFailureUnit *unit = [[MFFileDownloaderPluginFirstDownloadFailureUnit alloc] init];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (unit.redownloadReadyBlock) {
+            unit.redownloadReadyBlock(newUrl);
+        }
+    });
+    
+    return unit;
+}
+
+- (void)reDownloadFailWithOriginUrl:(NSURL *)originUrl decodeUrl:(NSURL *)decodeUrl {
+    
+}
+
+- (void)downloadSuccessWithOriginUrl:(NSURL *)originUrl decodeUrl:(NSURL *)decodeUrl data:(NSData *)data {
+    
 }
 
 @end

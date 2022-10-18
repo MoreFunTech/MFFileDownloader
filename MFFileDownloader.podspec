@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'MFFileDownloader'
-  s.version          = '0.0.6'
+  s.version          = '0.0.7'
   s.summary          = 'A File Downloader Manager'
 
 # This description is used to generate tags and improve search results.
@@ -32,9 +32,11 @@ A File Downloader To Manager Download Actions;
 
   s.source_files = 'MFFileDownloader/Classes/**/*'
   
-  # s.resource_bundles = {
-  #   'MFFileDownloader' => ['MFFileDownloader/Assets/*.png']
-  # }
+#   s.resource_bundles = {
+#     Media.xcassets
+#     'MFFileDownloader' => ['MFFileDownloader/Assets/*.png']
+#     'MFFileDownloader' => ['MFFileDownloader/Assets/*.xcassets']
+#   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
    s.frameworks = 'UIKit'

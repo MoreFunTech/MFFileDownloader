@@ -4,7 +4,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MFFileDownloaderDownloadResultModel.h"
+#import "MFFileDownloaderHeader.h"
 
 @class MFFileDownloaderCommonResultModel;
 

@@ -1,6 +1,6 @@
 {
   "name": "MFFileDownloader",
-  "version": "0.0.2",
+  "version": "0.0.7",
   "summary": "A File Downloader Manager",
   "description": "A File Downloader To Manager Download Actions;",
   "homepage": "https://github.com/MoreFunTech/MFFileDownloader",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/MoreFunTech/MFFileDownloader.git",
-    "tag": "0.0.2"
+    "tag": "0.0.7"
   },
   "platforms": {
     "ios": "10.0"
