@@ -53,6 +53,7 @@
             @"https://ruiqu-1304540262.sutanapp.com/ec999da559be82327047f5d37549be2f.svga",
     ];
 
+    int totalCount = 0;
     for (int i = 0; i < downloadList.count; ++i) {
         MFFileDownloaderFileModel *fileModel = [[MFFileDownloaderFileModel alloc] init];
         fileModel.url = downloadList[i];
