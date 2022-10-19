@@ -52,55 +52,59 @@
         }
     }
     
-    if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
-        if (unit.downloadStatusChangeBlock) {
-            if (@available(iOS 11.0, *)) {
-                unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
-            } else {
-                NSProgress *progress = [[NSProgress alloc] init];
-                progress.totalUnitCount = task.countOfBytesExpectedToReceive;
-                progress.completedUnitCount = task.countOfBytesReceived;
-                unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
+            if (unit.downloadStatusChangeBlock) {
+                if (@available(iOS 11.0, *)) {
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
+                } else {
+                    NSProgress *progress = [[NSProgress alloc] init];
+                    progress.totalUnitCount = task.countOfBytesExpectedToReceive;
+                    progress.completedUnitCount = task.countOfBytesReceived;
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+                }
             }
-        }
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadWaiting) {
-        if (unit.downloadStatusChangeBlock) {
-            if (@available(iOS 11.0, *)) {
-                unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
-            } else {
-                NSProgress *progress = [[NSProgress alloc] init];
-                progress.totalUnitCount = task.countOfBytesExpectedToReceive;
-                progress.completedUnitCount = task.countOfBytesReceived;
-                unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
+        } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadWaiting) {
+            if (unit.downloadStatusChangeBlock) {
+                if (@available(iOS 11.0, *)) {
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
+                } else {
+                    NSProgress *progress = [[NSProgress alloc] init];
+                    progress.totalUnitCount = task.countOfBytesExpectedToReceive;
+                    progress.completedUnitCount = task.countOfBytesReceived;
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+                }
             }
-        }
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadPause) {
-        [task resume];
-        unit.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
-        if (unit.downloadStatusChangeBlock) {
-            if (@available(iOS 11.0, *)) {
-                unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
-            } else {
-                NSProgress *progress = [[NSProgress alloc] init];
-                progress.totalUnitCount = task.countOfBytesExpectedToReceive;
-                progress.completedUnitCount = task.countOfBytesReceived;
-                unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
+        } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadPause) {
+            [task resume];
+            unit.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
+            if (unit.downloadStatusChangeBlock) {
+                if (@available(iOS 11.0, *)) {
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, task.progress, task.error);
+                } else {
+                    NSProgress *progress = [[NSProgress alloc] init];
+                    progress.totalUnitCount = task.countOfBytesExpectedToReceive;
+                    progress.completedUnitCount = task.countOfBytesReceived;
+                    unit.downloadStatusChangeBlock(unit.downloadStatus, progress, task.error);
+                }
             }
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
+        } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
+            [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
+        } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadError) {
+            [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
+        } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadNot) {
+            [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
+            [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
         }
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
-        [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadError) {
-        [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    } else if (unit.downloadStatus == MFFileDownloaderDownloadStatusDownloadNot) {
-        [self createNewOriginTaskWithUrl:unit.originUrl localPath:unit.localPath];
-        [MFFileDownloaderManager.sharedInstance.unitList addObject:unit];
-    }
 
+    });
+    
     return unit;
 }
 

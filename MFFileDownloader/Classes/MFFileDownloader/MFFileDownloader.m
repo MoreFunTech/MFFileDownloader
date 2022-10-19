@@ -29,6 +29,7 @@
     if (searchModel.status < 0) {
         return searchModel;
     }
+    
     if ([searchModel.data isKindOfClass:[NSArray class]]) {
         NSArray *list = searchModel.data;
         if (list.count < 1) {
@@ -45,7 +46,11 @@
             } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-2 msg:@"文件正在下载中" data:fileModel1];
             } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
-                return [MFFileDownloaderCommonResultModel modelWithStatus:-3 msg:@"文件已存在" data:fileModel1];
+                if ([NSFileManager.defaultManager fileExistsAtPath:fileModel1.fullLocalPath]) {
+                    return [MFFileDownloaderCommonResultModel modelWithStatus:-3 msg:@"文件已存在" data:fileModel1];
+                } else {
+                    return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+                }
             } else {
                 return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知状态, 请更新版本" data:fileModel1];
             }
