@@ -44,8 +44,11 @@ fileModel.mediaType = 6;
 fileModel.name = @"test.pag";
 
 // 创建下载任务
-MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
-    // 判断文件下载状态
+MFFileDownloaderFileModel *fileModel = [[MFFileDownloaderFileModel alloc] init];
+fileModel.url = downloadList[i];
+fileModel.mediaType = 1;
+
+[MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
     switch (model.downloadStatus) {
         case MFFileDownloaderDownloadStatusDownloadNot:
             MFFileDownloaderLog.logDebug(@"未下载");
@@ -59,21 +62,11 @@ MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader addDownloa
         case MFFileDownloaderDownloadStatusDownloadError:
             MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
             break;
+        default:
+            MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
+            break;
     }
 }];
-
-// 获取文件的下载路径
-if ([downloadResult.data isKindOfClass:[MFFileDownloaderFileModel class]]) {
-    MFFileDownloaderFileModel *model = downloadResult.data;
-    fileModel.localPath = model.localPath;
-}
-
-// 判断下载任务的创建结果
-if (downloadResult.status < 0) {
-    MFFileDownloaderLog.logError([NSString stringWithFormat:@"下载任务添加失败 [%@]: %@", fileModel.fullLocalPath, downloadResult.msg]);
-} else {
-    MFFileDownloaderLog.logDebug(@"下载开始");
-}
 ```
 
 ## Author
