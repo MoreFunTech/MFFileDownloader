@@ -31,16 +31,15 @@
 
 
     NSArray *downloadList = @[
-        @"https://yuquan-1304540262.cos.ap-guangzhou.myqcloud.com/pid001.zip"
+        @"https://static.runoob.com/images/demo/demo2.jpg"
     ];
 
-    int totalCount = 0;
     for (int i = 0; i < downloadList.count; ++i) {
         MFFileDownloaderFileModel *fileModel = [[MFFileDownloaderFileModel alloc] init];
         fileModel.url = downloadList[i];
-        fileModel.mediaType = 5;
+        fileModel.mediaType = 1;
 //        fileModel.name = @"test.pag";
-        MFFileDownloaderCommonResultModel *downloadResult = [MFFileDownloader reDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
+        [MFFileDownloader addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
             switch (model.downloadStatus) {
                 case MFFileDownloaderDownloadStatusDownloadNot:
                     MFFileDownloaderLog.logDebug(@"未下载");
@@ -54,17 +53,20 @@
                 case MFFileDownloaderDownloadStatusDownloadError:
                     MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
                     break;
+                default:
+                    MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"下载出错 [%@]: %@", model.fileModel.fullLocalPath, model.error.localizedDescription]);
+                    break;
             }
         }];
-        if ([downloadResult.data isKindOfClass:[MFFileDownloaderFileModel class]]) {
-            MFFileDownloaderFileModel *model = downloadResult.data;
-            fileModel.localPath = model.localPath;
-        }
-        if (downloadResult.status < 0) {
-            MFFileDownloaderLog.logError([NSString stringWithFormat:@"下载任务添加失败 [%@]: %@", fileModel.fullLocalPath, downloadResult.msg]);
-        } else {
-            MFFileDownloaderLog.logDebug(@"下载开始");
-        }
+//        if ([downloadResult.data isKindOfClass:[MFFileDownloaderFileModel class]]) {
+//            MFFileDownloaderFileModel *model = downloadResult.data;
+//            fileModel.localPath = model.localPath;
+//        }
+//        if (downloadResult.status < 0) {
+//            MFFileDownloaderLog.logError([NSString stringWithFormat:@"下载任务添加失败 [%@]: %@", fileModel.fullLocalPath, downloadResult.msg]);
+//        } else {
+//            MFFileDownloaderLog.logDebug(@"下载开始");
+//        }
     }
 
 
@@ -125,7 +127,7 @@
 
 - (MFFileDownloaderPluginFirstDownloadFailureUnit *)firstDownloadFailWithUrl:(NSURL *)url {
 //
-    NSString *newUrl = @"http://yuquan-1304540262.cos.ap-guangzhou.myqcloud.com/pid001.zip?q-sign-algorithm=sha1&q-ak=AKIDgfa2lxhzSZuNYkVrxtat0pRLduf4RaQL&q-sign-time=1666246008;1666249608&q-key-time=1666246008;1666249608&q-header-list=host;x-cos-security-token&q-url-param-list=&q-signature=043e905b14ad9b5f597ff85809b9b5fcd13bdc9b&x-cos-security-token=24a0bccda3e432cdc02712ccb263505691bc9f4430001";
+    NSString *newUrl = @"https://img1.baidu.com/it/u=3009731526,373851691&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=500";
     MFFileDownloaderLog.logDebug([NSString stringWithFormat:@"重解析地址 [origin: %@ | new: %@]", url, newUrl]);
     MFFileDownloaderPluginFirstDownloadFailureUnit *unit = [[MFFileDownloaderPluginFirstDownloadFailureUnit alloc] init];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

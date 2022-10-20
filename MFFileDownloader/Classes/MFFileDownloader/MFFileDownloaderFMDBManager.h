@@ -48,47 +48,55 @@
 /**
  * 插入数据
  * @param fileModel 数据模型
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)insertDataWithModel:(MFFileDownloaderFileModel *)fileModel;
++ (void)insertDataWithModel:(MFFileDownloaderFileModel *)fileModel resultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 更新数据
  * @param fileModel 数据模型
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)updateDataWithModel:(MFFileDownloaderFileModel *)fileModel;
++ (void)updateDataWithModel:(MFFileDownloaderFileModel *)fileModel resultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 删除数据
  * @param fileModel 数据模型
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)deleteDataWithModel:(MFFileDownloaderFileModel *)fileModel;
++ (void)deleteDataWithModel:(MFFileDownloaderFileModel *)fileModel resultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 查询数据
  * @param url 根据url进行查询
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)searchDataWithUrl:(NSString *)url;
++ (void)searchDataWithUrl:(NSString *)url resultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 查询数据
  * @param id 根据url进行查询
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)searchDataWithId:(NSString *)id;
++ (void)searchDataWithId:(NSString *)id resultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 查询数据
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)getAllData;
++ (void)getAllDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 查询数据
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)getAllDownloadedData;
++ (void)getAllDownloadedDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 查询数据
+ * @param resultBlock 结果回调
  */
-+ (MFFileDownloaderCommonResultModel *)getAllDownloadingData;
++ (void)getAllDownloadingDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock;
 
 /**
  * 清空所有下载的文件

@@ -12,104 +12,134 @@
 
 @implementation MFFileDownloader
 
-+ (MFFileDownloaderCommonResultModel *)addDownloadFile:(MFFileDownloaderFileModel *)fileModel {
-    return [self addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
-
-    }];
++ (void)addDownloadFile:(MFFileDownloaderFileModel *)fileModel {
+    [self addDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) { }];
 }
 
-+ (MFFileDownloaderCommonResultModel *)addDownloadFile:(MFFileDownloaderFileModel *)fileModel
-                                           resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
++ (void)addDownloadFile:(MFFileDownloaderFileModel *)fileModel
+            resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     MFFileDownloaderCommonResultModel *validResult = [self judgeValidDownloadFile:fileModel];
     if (validResult.status < 0) {
-        return validResult;
+        resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:validResult.status userInfo:@{NSLocalizedDescriptionKey: validResult.msg}]]);
+        return;
     }
 
-    MFFileDownloaderCommonResultModel *searchModel = [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url];
-    if (searchModel.status < 0) {
-        return searchModel;
-    }
-    
-    if ([searchModel.data isKindOfClass:[NSArray class]]) {
-        NSArray *list = searchModel.data;
-        if (list.count < 1) {
-            MFFileDownloaderCommonResultModel *insertModel = [MFFileDownloaderFMDBManager insertDataWithModel:fileModel];
-            if (insertModel.status < 0) {
-                return insertModel;
-            } else {
-                return [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
+    [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url resultBlock:^(MFFileDownloaderCommonResultModel *searchModel) {
+        if (searchModel.status < 0) {
+            resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:searchModel.status userInfo:@{NSLocalizedDescriptionKey: searchModel.msg}]]);
+            return;
+        }
+        if ([searchModel.data isKindOfClass:[NSArray class]]) {
+            NSArray *list = searchModel.data;
+            if (list.count < 1) {
+                [MFFileDownloader addDownloadInsertDataBaseFile:fileModel resultBlock:resultBlock];
+                return;
             }
-        } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
             if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadNot || fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadError) {
-                return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
-            } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
-                return [MFFileDownloaderCommonResultModel modelWithStatus:-2 msg:@"文件正在下载中" data:fileModel1];
-            } else if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
+                [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+                return;
+            }
+            if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloading) {
+                resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel1 downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:-2 userInfo:@{NSLocalizedDescriptionKey:@"文件正在下载中"}]]);
+                return;
+            }
+            if (fileModel1.downloadStatus == MFFileDownloaderDownloadStatusDownloadFinish) {
                 if ([NSFileManager.defaultManager fileExistsAtPath:fileModel1.fullLocalPath]) {
-                    return [MFFileDownloaderCommonResultModel modelWithStatus:-3 msg:@"文件已存在" data:fileModel1];
+                    resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel1 downloadStatus:(MFFileDownloaderDownloadStatusDownloadFinish) error:nil]);
+                    return;
                 } else {
-                    return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+                    [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+                    return;
                 }
             } else {
-                return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知状态, 请更新版本" data:fileModel1];
+                resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel1 downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:-1 userInfo:@{NSLocalizedDescriptionKey:@"未知状态, 请更新版本"}]]);
+                return;
             }
+            return;
         }
-    }
-    return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知错误, 请更新版本" data:@""];
+        resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:-1 userInfo:@{NSLocalizedDescriptionKey:@"未知状态, 请更新版本"}]]);
+        return;
+    }];
+    
 }
 
-+ (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel {
-    return [self reDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) {
-
++ (void)addDownloadInsertDataBaseFile:(MFFileDownloaderFileModel *)fileModel
+                          resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
+    [MFFileDownloaderFMDBManager insertDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *insertModel) {
+        if (insertModel.status < 0) {
+            resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:insertModel.status userInfo:@{NSLocalizedDescriptionKey: insertModel.msg}]]);
+            return;
+        }
+        [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
     }];
 }
 
-+ (MFFileDownloaderCommonResultModel *)reDownloadFile:(MFFileDownloaderFileModel *)fileModel
+
++ (void)reDownloadFile:(MFFileDownloaderFileModel *)fileModel {
+    [self reDownloadFile:fileModel resultBlock:^(MFFileDownloaderDownloadResultModel *model) { }];
+}
+
++ (void)reDownloadFile:(MFFileDownloaderFileModel *)fileModel
                                           resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     MFFileDownloaderCommonResultModel *validResult = [self judgeValidDownloadFile:fileModel];
     if (validResult.status < 0) {
-        return validResult;
+        resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:validResult.status userInfo:@{NSLocalizedDescriptionKey: validResult.msg}]]);
+        return;
     }
-    MFFileDownloaderCommonResultModel *searchModel = [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url];
-    if (searchModel.status < 0) {
-        return searchModel;
-    }
-    if ([searchModel.data isKindOfClass:[NSArray class]]) {
-        NSArray *list = searchModel.data;
-        if (list.count < 1) {
-            MFFileDownloaderCommonResultModel *insertModel = [MFFileDownloaderFMDBManager insertDataWithModel:fileModel];
-            if (insertModel.status < 0) {
-                return insertModel;
-            } else {
-                return [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
+    
+    [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url resultBlock:^(MFFileDownloaderCommonResultModel *searchModel) {
+        if (searchModel.status < 0) {
+            resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:searchModel.status userInfo:@{NSLocalizedDescriptionKey: searchModel.msg}]]);
+            return;
+        }
+        
+        if ([searchModel.data isKindOfClass:[NSArray class]]) {
+            NSArray *list = searchModel.data;
+            if (list.count < 1) {
+                [MFFileDownloader reDownloadInsertDataBaseFile:fileModel resultBlock:resultBlock];
+                return;
             }
-        } else {
             MFFileDownloaderFileModel *fileModel1 = list.firstObject;
             NSError *error;
             NSURL *pathUrl = [NSURL fileURLWithPath:fileModel1.fullLocalPath];
             BOOL removeSuccess = [NSFileManager.defaultManager removeItemAtURL:pathUrl error:&error];
             if ([NSFileManager.defaultManager fileExistsAtPath:fileModel1.fullLocalPath]) {
                 if (!removeSuccess || error) {
-                    return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"旧文件移除失败" data:@""];
+                    resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:-1 userInfo:@{NSLocalizedDescriptionKey: @"旧文件移除失败"}]]);
+                    return;
                 }
             }
-            return [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+            [self preStartDownloadWithFileModel:fileModel1 resultBlock:resultBlock];
+            return;
         }
-    }
-    return [MFFileDownloaderCommonResultModel modelWithStatus:-1 msg:@"未知错误, 请更新版本" data:@""];
+        resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:-1 userInfo:@{NSLocalizedDescriptionKey:@"未知状态, 请更新版本"}]]);
+        return;
+    }];
+
 }
 
-+ (MFFileDownloaderCommonResultModel *)getAllData {
-    return [MFFileDownloaderFMDBManager getAllData];
++ (void)reDownloadInsertDataBaseFile:(MFFileDownloaderFileModel *)fileModel
+                          resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
+    [MFFileDownloaderFMDBManager insertDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *insertModel) {
+        if (insertModel.status < 0) {
+            resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:insertModel.status userInfo:@{NSLocalizedDescriptionKey: insertModel.msg}]]);
+            return;
+        }
+        [self preStartDownloadWithFileModel:fileModel resultBlock:resultBlock];
+    }];
 }
 
-+ (MFFileDownloaderCommonResultModel *)getAllDownloadedData {
-    return [MFFileDownloaderFMDBManager getAllDownloadedData];;
++ (void)getAllDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock {
+    [MFFileDownloaderFMDBManager getAllDataWithResultBlock:resultBlock];
 }
 
-+ (MFFileDownloaderCommonResultModel *)getAllDownloadingData {
-    return [MFFileDownloaderFMDBManager getAllDownloadingData];;
++ (void)getAllDownloadedDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock {
+    [MFFileDownloaderFMDBManager getAllDownloadedDataWithResultBlock:resultBlock];
+}
+
++ (void)getAllDownloadingDataWithResultBlock:(void(^)(MFFileDownloaderCommonResultModel *))resultBlock {
+    [MFFileDownloaderFMDBManager getAllDownloadingDataWithResultBlock:resultBlock];;
 }
 
 + (void)clearAllDownloadFiles {
@@ -135,29 +165,43 @@
     return [MFFileDownloaderCommonResultModel modelWithStatus:0 msg:@"" data:@"Success"];
 }
 
-+ (MFFileDownloaderCommonResultModel *)preStartDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel
-                                                         resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
++ (void)preStartDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel
+                          resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
     if (![MFFileDownloaderTool isStringNotNull:fileModel.id]) {
-        MFFileDownloaderCommonResultModel *searchResult = [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url];
-        if ([searchResult.data isKindOfClass:[NSArray class]]) {
-            NSArray *list = searchResult.data;
-            if (list.count > 0) {
-                MFFileDownloaderFileModel *fileModel1 = list.firstObject;
-                fileModel.id = fileModel1.id;
-                fileModel.status = fileModel1.status;
-                fileModel.version = fileModel1.version;
-                fileModel.localPath = fileModel1.localPath;
+//        MFFileDownloaderCommonResultModel *searchResult =
+        [MFFileDownloaderFMDBManager searchDataWithUrl:fileModel.url resultBlock:^(MFFileDownloaderCommonResultModel *searchResult) {
+            MFFileDownloaderLog.logDebug(@"preStartDownloadWithFileModel");
+            if ([searchResult.data isKindOfClass:[NSArray class]]) {
+                NSArray *list = searchResult.data;
+                if (list.count > 0) {
+                    MFFileDownloaderFileModel *fileModel1 = list.firstObject;
+                    fileModel.id = fileModel1.id;
+                    fileModel.status = fileModel1.status;
+                    fileModel.version = fileModel1.version;
+                    fileModel.localPath = fileModel1.localPath;
+                }
             }
-        }
+            [MFFileDownloader preStartDownloadUpdateDataBaseWithFileModel:fileModel resultBlock:resultBlock];
+        }];
+        
+    } else {
+        [MFFileDownloader preStartDownloadUpdateDataBaseWithFileModel:fileModel resultBlock:resultBlock];
     }
-    MFFileDownloaderCommonResultModel *updateResult = [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-    if (updateResult.status < 0) {
-        return updateResult;
-    }
-    [self startDownloadWithFileModel:fileModel resultBlock:resultBlock];
-    return [MFFileDownloaderCommonResultModel modelWithStatus:0 msg:@"" data:fileModel];
+}
 
++ (void)preStartDownloadUpdateDataBaseWithFileModel:(MFFileDownloaderFileModel *)fileModel
+                                        resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
+    
+    [MFFileDownloaderFMDBManager updateDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *updateResult) {
+        if (updateResult.status < 0) {
+            resultBlock([MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel downloadStatus:(MFFileDownloaderDownloadStatusDownloadError) error:[NSError errorWithDomain:@"com.mfFileDownloader.error" code:updateResult.status userInfo:@{NSLocalizedDescriptionKey: updateResult.msg}]]);
+            return;
+        }
+        [MFFileDownloader startDownloadWithFileModel:fileModel resultBlock:resultBlock];
+        return;
+    }];
+    
 }
 
 + (void)startDownloadWithFileModel:(MFFileDownloaderFileModel *)fileModel
@@ -180,54 +224,41 @@
 
 }
 
-+ (void)downloadingWithFileModel:(MFFileDownloaderFileModel *)fileModel progress:(NSProgress * _Nullable)progress resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
++ (void)downloadingWithFileModel:(MFFileDownloaderFileModel *)fileModel
+                        progress:(NSProgress * _Nullable)progress
+                     resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloading;
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    dispatch_async(queue, ^{
-        [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-    });
-    if (!resultBlock) {
-      return;
-    }
-    resultBlock(
-                [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                         downloadStatus:MFFileDownloaderDownloadStatusDownloading
-                                                               progress:progress]
-    );
+    [MFFileDownloaderFMDBManager updateDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *commonResultModel) {
+        resultBlock(
+                    [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                             downloadStatus:MFFileDownloaderDownloadStatusDownloading
+                                                                   progress:progress]
+        );
+    }];
+    
 }
 
 + (void)downloadfinishWithFileModel:(MFFileDownloaderFileModel *)fileModel resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     
     fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadFinish;
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    dispatch_async(queue, ^{
-        [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-    });
-    if (!resultBlock) {
-      return;
-    }
-    resultBlock(
-                [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                         downloadStatus:MFFileDownloaderDownloadStatusDownloadFinish]
-    );
+    [MFFileDownloaderFMDBManager updateDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *commonResultModel) {
+        resultBlock(
+                    [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                             downloadStatus:MFFileDownloaderDownloadStatusDownloadFinish]
+        );
+    }];
 }
 
 + (void)downloadErrorWithFileModel:(MFFileDownloaderFileModel *)fileModel error:(NSError * _Nullable)error resultBlock:(void (^)(MFFileDownloaderDownloadResultModel *))resultBlock {
     
     fileModel.downloadStatus = MFFileDownloaderDownloadStatusDownloadNot;
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    dispatch_async(queue, ^{
-        [MFFileDownloaderFMDBManager updateDataWithModel:fileModel];
-    });
-    if (!resultBlock) {
-      return;
-    }
-    resultBlock(
-                [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
-                                                         downloadStatus:MFFileDownloaderDownloadStatusDownloadError
-                                                                  error:error]
-    );
-    
+    [MFFileDownloaderFMDBManager updateDataWithModel:fileModel resultBlock:^(MFFileDownloaderCommonResultModel *commonResultModel) {
+        resultBlock(
+                    [MFFileDownloaderDownloadResultModel modelWithFileModel:fileModel
+                                                             downloadStatus:MFFileDownloaderDownloadStatusDownloadError
+                                                                      error:error]
+        );
+    }];
 }
 
 

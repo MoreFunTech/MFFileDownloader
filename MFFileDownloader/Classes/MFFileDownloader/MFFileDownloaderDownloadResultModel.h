@@ -11,7 +11,7 @@
 @interface MFFileDownloaderDownloadResultModel : NSObject
 
 @property (nonatomic, strong) MFFileDownloaderFileModel *fileModel;
-@property (nonatomic, assign) NSInteger downloadStatus;
+@property (nonatomic, assign) MFFileDownloaderDownloadStatus downloadStatus;
 @property (nonatomic, strong) NSProgress *progress;
 @property (nonatomic, strong) NSError *error;
 
