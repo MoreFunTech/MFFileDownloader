@@ -48,6 +48,7 @@
 
     self.downloadStatus = unit.downloadStatus;
     self.downloadFinishFilePath = unit.downloadFinishFilePath;
+    self.error = unit.error;
     self.progress = unit.progress;
     if (self.downloadStatusChangeBlock) {
         self.downloadStatusChangeBlock(self.downloadStatus, self.progress, self.error);

@@ -30,7 +30,7 @@
     MFFileDownloaderTaskUnit *unit = [[MFFileDownloaderTaskUnit alloc] init];
     unit.originUrl = url;
     unit.localPath = localPath;
-    
+   
     __block NSURLSessionDownloadTask *task;
     
     [AFHTTPSessionManager.manager.downloadTasks enumerateObjectsUsingBlock:^(NSURLSessionDownloadTask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -114,6 +114,11 @@
     
     __weak typeof(self) weakSelf = self;
     
+    if ([NSFileManager.defaultManager fileExistsAtPath:localPath]) {
+        NSError *error;
+        [NSFileManager.defaultManager removeItemAtPath:localPath error:&error];
+    }
+    
     NSURLSessionDownloadTask *task = [AFHTTPSessionManager.manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         MFFileDownloaderTaskUnit *unit = [[MFFileDownloaderTaskUnit alloc] init];
         unit.originUrl = url;
@@ -158,6 +163,11 @@
 }
 
 - (void)redownloadTaskWithOriginUrl:(NSString *)originUrl decodeUrl:(NSString *)decodeUrl localPath:(NSString *)localPath {
+    
+    if ([NSFileManager.defaultManager fileExistsAtPath:localPath]) {
+        NSError *error;
+        [NSFileManager.defaultManager removeItemAtPath:localPath error:&error];
+    }
     
     if (![MFFileDownloaderTool isStringNotNull:decodeUrl]) {
         MFFileDownloaderTaskUnit *unit = [[MFFileDownloaderTaskUnit alloc] init];
