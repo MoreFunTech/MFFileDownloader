@@ -130,7 +130,7 @@
        return [NSURL fileURLWithPath:localPath];
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         if (error) {
-            if ([MFFileDownloaderManager.sharedInstance.pluginDelegate respondsToSelector:@selector(firstDownloadFailWithUrl:)]) {
+            if ([MFFileDownloaderManager.sharedInstance.pluginDelegate respondsToSelector:@selector(firstDownloadFailWithUrl:redownloadReadyBlock:)]) {
                 [weakSelf firstDownloadFailedProcessWithUrl:url localPath:localPath];
             } else {
                 MFFileDownloaderTaskUnit *unit = [[MFFileDownloaderTaskUnit alloc] init];
@@ -156,10 +156,9 @@
 - (void)firstDownloadFailedProcessWithUrl:(NSString *)originUrl localPath:(NSString *)localPath {
     __weak typeof(self) weakSelf = self;
     NSURL *url = [NSURL URLWithString:originUrl];
-    MFFileDownloaderPluginFirstDownloadFailureUnit *decodeUnit = [MFFileDownloaderManager.sharedInstance.pluginDelegate firstDownloadFailWithUrl:url];
-    decodeUnit.redownloadReadyBlock = ^(NSString * _Nonnull decodeUrl) {
+    [MFFileDownloaderManager.sharedInstance.pluginDelegate firstDownloadFailWithUrl:url redownloadReadyBlock:^(NSString * _Nonnull decodeUrl) {
         [weakSelf redownloadTaskWithOriginUrl:originUrl decodeUrl:decodeUrl localPath:localPath];
-    };
+    }];
 }
 
 - (void)redownloadTaskWithOriginUrl:(NSString *)originUrl decodeUrl:(NSString *)decodeUrl localPath:(NSString *)localPath {
