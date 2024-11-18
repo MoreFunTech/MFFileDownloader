@@ -10,13 +10,6 @@
 #import "MFFileDownloaderTaskUnit.h"
 #import "MFFileDownloaderTool.h"
 
-@implementation MFFileDownloaderPluginFirstDownloadFailureUnit
-
-
-
-@end
-
-
 @interface MFFileDownloaderManager ()
 
 
